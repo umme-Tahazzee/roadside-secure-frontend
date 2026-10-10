@@ -12,7 +12,7 @@ This app talks to the [RoadRescue backend](https://github.com/umme-Tahazzee/road
 | Styling / UI | Tailwind CSS, shadcn/ui |
 | HTTP client | ofetch |
 | Server state | TanStack Query v5 |
-| Forms / validation | React Hook Form, Zod, `@hookform/resolvers` |
+| Forms / validation | Tankstack Form, Zod, `@hookform/resolvers` |
 | Toasts | Sonner |
 
 ## Getting Started
