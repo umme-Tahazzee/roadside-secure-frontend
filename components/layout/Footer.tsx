@@ -1,5 +1,6 @@
 import Logo from "@/utils/logo";
 import Link from "next/link";
+import { CurrentYear } from "./current-year";
 
 
 const columns = [
@@ -64,7 +65,7 @@ export default function Footer() {
         </div>
 
         <div className="mt-12 flex flex-col gap-3 border-t pt-6 text-sm text-muted-foreground sm:flex-row sm:items-center sm:justify-between">
-          <p>© {new Date().getFullYear()} RoadRescue. All rights reserved.</p>
+          <p><CurrentYear/> RoadRescue. All rights reserved.</p>
           <div className="flex gap-5">
             <Link href="/privacy" className="hover:text-foreground">
               Privacy
