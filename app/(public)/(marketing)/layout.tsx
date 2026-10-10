@@ -22,7 +22,7 @@ export default function RootLayout({ children }: LayoutProps<"/">) {
                 className="pointer-events-none absolute inset-0 -z-10
                  bg-[radial-gradient(60%_55%_at_75%_0%,color-mix(in_oklab,var(--primary)_16%,transparent),transparent),radial-gradient(40%_40%_at_10%_20%,color-mix(in_oklab,var(--primary)_8%,transparent),transparent)]"
             />
-         <main className="">{children}</main>
+         <main className="" suppressHydrationWarning>{children}</main>
         <Footer/>
         </body>
     </html>

@@ -51,7 +51,7 @@ export default function Header() {
         </div>
 
         <div className="hidden items-center gap-2 md:flex">
-          <Button variant="outline" size="lg">
+          <Button  variant="outline" size="lg">
             <Link href="/login">Log in</Link>
           </Button>
           <Button variant="secondary" className='bg-primary text-white' size="lg">
@@ -61,7 +61,8 @@ export default function Header() {
 
         <button
           type="button"
-          className="inline-flex size-9 items-center justify-center rounded-md hover:bg-muted md:hidden"
+          className="inline-flex size-9 items-center justify-center rounded-md hover:bg-muted
+           md:hidden"
           onClick={() => setOpen((v) => !v)}
           aria-expanded={open}
           aria-label={open ? "Close menu" : "Open menu"}
