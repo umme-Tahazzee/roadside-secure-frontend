@@ -1,19 +1,21 @@
 
 import Hero from "@/components/module/home/Hero";
-import Services from "@/components/module/home/Services";
+
 import HowItWorks from "@/components/module/home/HowItWorks";
-import ForMechanics from "@/components/module/home/ForMechanics";
+
 import FAQ from "@/components/module/home/FAQ";
 import CTA from "@/components/module/home/CTA";
+import WhyChooseUs from "@/components/module/home/Services";
+import OurServices from "@/components/module/home/ForMechanics";
 
 
 export default function HomePage() {
   return (
-      <main>
+      <main className="">
        <Hero/>
-       <Services/>
        <HowItWorks/>
-       <ForMechanics/>
+       <WhyChooseUs/>
+       <OurServices/>
        <FAQ/>
        <CTA/>     
       </main> 

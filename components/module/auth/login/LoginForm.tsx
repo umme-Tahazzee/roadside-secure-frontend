@@ -12,7 +12,6 @@ import {
 } from "@/components/ui/card";
 import {
   Field,
-  FieldDescription,
   FieldError,
   FieldGroup,
   FieldLabel,
@@ -20,6 +19,8 @@ import {
 } from "@/components/ui/field";
 import { Input } from "@/components/ui/input";
 import { useForm } from "@tanstack/react-form-nextjs";
+import { loginValidationSchema } from "@/validation";
+
 
 export function LoginForm({
   className,
@@ -29,6 +30,9 @@ export function LoginForm({
     defaultValues: {
       email: "",
       password: "",
+    },
+    validators : {
+         onSubmit : loginValidationSchema
     },
     onSubmit: (data) => {
       console.log(data);
