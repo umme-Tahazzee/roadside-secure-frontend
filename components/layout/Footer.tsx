@@ -26,7 +26,7 @@ const columns = [
     links: [
       { href: "/#how-it-works", label: "How it works" },
       { href: "/#faq", label: "FAQ" },
-      { href: "mailto:support@roadrescue.com", label: "Contact" },
+      { href: "mailto:tahazzeekaria1@gmail.com", label: "Contact" },
     ],
   },
 ];

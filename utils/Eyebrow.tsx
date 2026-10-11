@@ -14,7 +14,7 @@ export default function Eyebrow({
 }: EyebrowProps) {
   return (
     <div
-      className={`mt-4 flex items-center gap-1 rounded-2xl bg-primary/5 px-4 py-1 text-sm font-bold text-dark lg:text-xl ${className}`}
+      className={` inline-flex items-center gap-2 rounded-full px-4 py-2 text-sm font-medium text-primary ${className}`}
     >
       <span className="text-primary">
         <Icon />

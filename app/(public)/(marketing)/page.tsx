@@ -17,7 +17,7 @@ export default function HomePage() {
        <WhyChooseUs/>
        <OurServices/>
        <FAQ/>
-       <CTA/>     
+           
       </main> 
   );
 }

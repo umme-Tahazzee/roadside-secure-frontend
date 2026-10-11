@@ -74,7 +74,7 @@ export default function WhyChooseUs() {
         <div className="grid items-center gap-12 lg:grid-cols-2 lg:gap-14">
           {/* Left content */}
           <div>
-            <div className="mb-6 inline-flex items-center gap-2 rounded-full px-4 py-2 text-sm font-medium text-[#008577]">
+            <div className="mb-6 inline-flex items-center gap-2 rounded-full px-4 py-2 text-sm font-medium text-primary">
               <ShieldCheck size={18} />
               Why choose Roadside Secure
             </div>

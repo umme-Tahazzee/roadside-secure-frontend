@@ -41,7 +41,7 @@ export default function HowItWorks() {
       className="mx-auto  flex w-full max-w-7xl flex-col items-center justify-center px-4"
     >
       <Eyebrow label="How it works" />
-      <SectionTitle title="Get roadside help in" highlight="simple 4 steps" />
+      <SectionTitle title="Get roadside help in" highlight="simple 4 steps" description="Get roadside assistance in just a few simple steps. Choose the service you need, share your location, and get connected with a nearby mechanic. Track your request as help arrives, get your vehicle back on the road, and pay after the service is completed." />
 
       <div className="relative grid w-full grid-cols-1 gap-6 py-6 sm:grid-cols-2 lg:grid-cols-4">
         {steps.map((item) => (
