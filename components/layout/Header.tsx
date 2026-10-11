@@ -2,7 +2,7 @@
 
 import Link from "next/link";
 import { useEffect, useState } from "react";
-import { Menu, X } from "lucide-react";
+import { LogIn, Menu, X } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import Logo from "@/utils/logo";
 
@@ -59,6 +59,12 @@ export default function Header() {
           </Button>
         </div>
 
+        <Button variant="outline" className="md:hidden">
+                <Link href="/login" onClick={() => setOpen(false)}>
+                  <LogIn className="text-primary" />
+                </Link>
+        </Button>
+
         <button
           type="button"
           className="inline-flex size-9 items-center justify-center rounded-md hover:bg-muted
@@ -85,11 +91,7 @@ export default function Header() {
               </Link>
             ))}
             <div className="mt-2 grid grid-cols-2 gap-2 pb-2">
-              <Button variant="outline">
-                <Link href="/login" onClick={() => setOpen(false)}>
-                  Log in
-                </Link>
-              </Button>
+              
               <Button>
                 <Link href="/register" onClick={() => setOpen(false)}>
                   Get started
