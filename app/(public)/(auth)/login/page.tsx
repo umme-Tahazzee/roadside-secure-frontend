@@ -1,15 +1,33 @@
-// biome-ignore assist/source/organizeImports: <explanation>
 import { LoginForm } from "@/components/module/auth/login/LoginForm"
+import { GalleryVerticalEnd } from "lucide-react"
+import Link from "next/link"
+import img from '@/app/assests/img/auth/login.png'
+import Image from "next/image"
 import Logo from "@/utils/logo"
+
+
 
 export default function LoginPage() {
   return (
-    <div className="flex min-h-svh flex-col items-center justify-center  bg-muted p-6 md:p-10">
-      <div className="flex w-full max-w-sm flex-col gap-4">
-        <div className="flex items-center gap-2 self-center font-medium">
-          <Logo className="" imageClassName="h-28 w-full"/>
+    <div className="grid min-h-svh lg:grid-cols-2">
+      <div className="flex flex-col gap-4 p-6 md:p-10">
+        <div className="flex justify-center gap-2 md:justify-start">
+          
+          <Logo className="mt-2"  imageClassName="h-30 w-fit"/>    
+         
         </div>
-        <LoginForm />
+        <div className="flex items-center justify-center">
+          <div className="w-full max-w-md">
+            <LoginForm />
+          </div>
+        </div>
+      </div>
+      <div className="relative hidden bg-muted lg:block">
+        <Image
+          src={img}
+          alt="Roadsite image"
+          className="absolute inset-0 h-full w-full object-cover dark:brightness-[0.2] dark:grayscale"
+        />
       </div>
     </div>
   )
