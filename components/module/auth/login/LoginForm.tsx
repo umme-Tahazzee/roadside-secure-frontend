@@ -20,22 +20,40 @@ import {
 import { Input } from "@/components/ui/input";
 import { useForm } from "@tanstack/react-form-nextjs";
 import { loginValidationSchema } from "@/validation";
-
+import { useLogin } from "@/hooks";
+import { useState } from "react";
+import { Eye, EyeOff } from "lucide-react";
+import { useRouter } from "next/navigation";
 
 export function LoginForm({
   className,
   ...props
 }: React.ComponentProps<"div">) {
+  const [showPassword, setShowPassword] = useState(false);
+  const { mutate: login, isPending: loginPending } = useLogin();
+  const router = useRouter()
+
   const form = useForm({
     defaultValues: {
-      email: "",
-      password: "",
+      email: "cse262@gmail.com",
+      password: "Qazmlp123",
     },
-    validators : {
-         onSubmit : loginValidationSchema
+    validators: {
+      onSubmit: loginValidationSchema,
     },
-    onSubmit: (data) => {
-      console.log(data);
+    onSubmit: ({ value }) => {
+      const loginData = {
+        email: value.email,
+        password: value.password,
+      };
+      login(loginData, {
+        onSuccess: (data) => {
+            router.push('/')
+        },
+        onError: (err) => {
+          console.log(err);
+        },
+      });
     },
   });
 
@@ -87,24 +105,41 @@ export function LoginForm({
                   );
                 }}
               </form.Field>
-
-               <form.Field name="password">
+              <form.Field name="password">
                 {(field) => {
                   const isInvalid =
                     field.state.meta.isTouched && !field.state.meta.isValid;
                   return (
                     <Field data-invalid={isInvalid}>
                       <FieldLabel htmlFor={field.name}>Password</FieldLabel>
-                      <Input
-                        id={field.name}
-                        name={field.name}
-                        value={field.state.value}
-                        onBlur={field.handleBlur}
-                        onChange={(e) => field.handleChange(e.target.value)}
-                        aria-invalid={isInvalid}
-                        placeholder="Enter Your Password"
-                        autoComplete="off"
-                      />
+                      <div className="relative">
+                        <Input
+                          id={field.name}
+                          name={field.name}
+                          type={showPassword ? "text" : "password"}
+                          value={field.state.value}
+                          onBlur={field.handleBlur}
+                          onChange={(e) => field.handleChange(e.target.value)}
+                          aria-invalid={isInvalid}
+                          placeholder="Enter Your Password"
+                          autoComplete="off"
+                          className="pr-10"
+                        />
+                        <button
+                          type="button"
+                          onClick={() => setShowPassword((prev) => !prev)}
+                          aria-label={
+                            showPassword ? "Hide password" : "Show password"
+                          }
+                          className="absolute right-3 top-1/2 -translate-y-1/2 text-muted-foreground hover:text-foreground"
+                        >
+                          {showPassword ? (
+                            <EyeOff className="size-4" />
+                          ) : (
+                            <Eye className="size-4" />
+                          )}
+                        </button>
+                      </div>
 
                       {isInvalid && (
                         <FieldError errors={field.state.meta.errors} />
@@ -115,8 +150,8 @@ export function LoginForm({
               </form.Field>
 
               <Field>
-                <Button size="lg" type="submit">
-                  Login
+                <Button size="lg" type="submit" disabled={loginPending}>
+                  {loginPending ? "Logging in..." : "Login"}
                 </Button>
               </Field>
             </FieldGroup>

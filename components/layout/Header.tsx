@@ -35,7 +35,7 @@ export default function Header() {
     >
       <div className="mx-auto flex h-20 max-w-7xl items-center justify-between px-5">
         <div className="flex items-center gap-10">
-         <Logo className="mt-2"  imageClassName="h-30 w-fit"/>    
+         <Logo className="mt-2"  imageClassName="h-20 md:h-30 w-fit"/>    
 
           <nav className="hidden items-center gap-1 md:flex" aria-label="Main">
             {links.map((l) => (
@@ -59,9 +59,9 @@ export default function Header() {
           </Button>
         </div>
 
-        <Button variant="outline" className="md:hidden">
-                <Link href="/login" onClick={() => setOpen(false)}>
-                  <LogIn className="text-primary" />
+        <Button size='lg' variant="outline" className="md:hidden flex gap-1">
+                <Link href="/login">
+                 Login
                 </Link>
         </Button>
 

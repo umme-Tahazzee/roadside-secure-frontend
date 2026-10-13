@@ -30,9 +30,9 @@ const services = [
 
 export default function Hero() {
   return (
-    <section className="relative overflow-hidden  md:py-12">
+    <section className="relative overflow-hidden min-h-screen">
       <div
-        className="mx-auto grid max-w-7xl items-center gap-12 px-5 pb-20 pt-14 md:pt-20
+        className="mx-auto grid max-w-7xl items-center gap-12 px-5 pb-20 pt-14 
        lg:grid-cols-[1.05fr_0.95fr] lg:gap-8"
       >
         <div>
