@@ -59,7 +59,7 @@ export default function Header() {
           </Button>
         </div>
 
-        <Button size='lg' variant="outline" className="md:hidden flex gap-1">
+        <Button size='lg' variant="default" className="md:hidden flex gap-1 bg-primary text-white">
                 <Link href="/login">
                  Login
                 </Link>

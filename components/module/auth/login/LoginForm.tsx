@@ -24,6 +24,8 @@ import { useLogin } from "@/hooks";
 import { useState } from "react";
 import { Eye, EyeOff } from "lucide-react";
 import { useRouter } from "next/navigation";
+import { toast } from "@/components/ui/toast";
+import { Spinner } from "@/components/ui/spinner";
 
 export function LoginForm({
   className,
@@ -31,7 +33,7 @@ export function LoginForm({
 }: React.ComponentProps<"div">) {
   const [showPassword, setShowPassword] = useState(false);
   const { mutate: login, isPending: loginPending } = useLogin();
-  const router = useRouter()
+  const router = useRouter();
 
   const form = useForm({
     defaultValues: {
@@ -47,11 +49,20 @@ export function LoginForm({
         password: value.password,
       };
       login(loginData, {
-        onSuccess: (data) => {
-            router.push('/')
+        onSuccess: (data) => {  
+          toast.add({
+            title: "Login Successfully",
+            description: "Welcome back",
+            type: "success"
+          });
+          router.push("/");
         },
         onError: (err) => {
-          console.log(err);
+          toast.add({
+            title: "Authorization failed",
+            description: "Something went wrong",
+            type: "error"
+          });
         },
       });
     },
@@ -151,7 +162,7 @@ export function LoginForm({
 
               <Field>
                 <Button size="lg" type="submit" disabled={loginPending}>
-                  {loginPending ? "Logging in..." : "Login"}
+                  {loginPending ? <> <Spinner /> Submitting </>  : "Login"}
                 </Button>
               </Field>
             </FieldGroup>
