@@ -78,9 +78,10 @@ export default function HowItWorks() {
               <div
                 aria-hidden="true"
                 className="pointer-events-none absolute left-1/2 top-full hidden h-10 w-[calc(60%+0.5rem)]
-                 rounded-b-full border-x-2 border-b-2 border-dashed border-primary/40 lg:block"
+                 rounded-b-full border-x-2 border-b-4 border-dashed 
+                 border-primary/40 lg:block"
               >
-                <ChevronUp className="absolute -top-1 right-0 h-5 w-5 
+                <ChevronUp className="absolute -top-1 right-0 h-6 w-6 
                 translate-x-1/2 text-primary" />
               </div>
             )}

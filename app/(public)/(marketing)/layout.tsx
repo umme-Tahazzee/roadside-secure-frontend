@@ -1,7 +1,9 @@
 import type { Metadata } from "next";
 import { cn } from "@/lib/utils";
-import Footer from "@/components/layout/Footer";
+import Footer from "@/components/layout/Footer/Footer";
 import Header from "@/components/layout/Header";
+// import Header from "@/components/layout/Header/index";
+
 
 
 export const metadata: Metadata = {
@@ -16,12 +18,9 @@ export default function RootLayout({ children }: LayoutProps<"/">) {
       className={cn("h-full", "antialiased")}
     >
       <body className="min-h-full flex flex-col">
+        {/* <Header/> */}
         <Header/>
-        {/* <div
-                aria-hidden
-                className="pointer-events-none absolute inset-0 -z-10
-                 bg-[radial-gradient(60%_55%_at_75%_0%,color-mix(in_oklab,var(--primary)_16%,transparent),transparent),radial-gradient(40%_40%_at_10%_20%,color-mix(in_oklab,var(--primary)_8%,transparent),transparent)]"
-            /> */}
+        
          <main className="" suppressHydrationWarning>{children}</main>
         <Footer/>
         </body>
