@@ -20,12 +20,13 @@ import {
 import { Input } from "@/components/ui/input";
 import { useForm } from "@tanstack/react-form-nextjs";
 import { loginValidationSchema } from "@/validation";
-import { useLogin } from "@/hooks";
+import { useGoogleAuth, useLogin } from "@/hooks";
 import { useState } from "react";
 import { Eye, EyeOff } from "lucide-react";
 import { useRouter } from "next/navigation";
 import { toast } from "@/components/ui/toast";
 import { Spinner } from "@/components/ui/spinner";
+import { GoogleCredentialResponse, GoogleLogin } from "@react-oauth/google";
 
 export function LoginForm({
   className,
@@ -33,6 +34,8 @@ export function LoginForm({
 }: React.ComponentProps<"div">) {
   const [showPassword, setShowPassword] = useState(false);
   const { mutate: login, isPending: loginPending } = useLogin();
+  const { mutate: googleLogin } = useGoogleAuth();
+
   const router = useRouter();
 
   const form = useForm({
@@ -49,11 +52,11 @@ export function LoginForm({
         password: value.password,
       };
       login(loginData, {
-        onSuccess: (data) => {  
+        onSuccess: (data) => {
           toast.add({
             title: "Login Successfully",
             description: "Welcome back",
-            type: "success"
+            type: "success",
           });
           router.push("/");
         },
@@ -61,12 +64,56 @@ export function LoginForm({
           toast.add({
             title: "Authorization failed",
             description: "Something went wrong",
-            type: "error"
+            type: "error",
           });
         },
       });
     },
   });
+
+  const handleGoogleSuccess = (
+    credentialResponse: GoogleCredentialResponse,
+  ) => {
+    const idToken = credentialResponse.credential;
+
+    if (!idToken) {
+      toast.add({
+        title: "Google OAuth Failed",
+        description: "Something went wrong",
+        type: "error",
+      });
+      return;
+    }
+
+    googleLogin(
+      { idToken },
+      {
+        onSuccess: () => {
+          toast.add({
+            title: "Google OAuth Login Successfully",
+            description: "Welcome back",
+            type: "success",
+          });
+          router.push("/");
+        },
+        onError: () => {
+          toast.add({
+            title: "Google OAuth Failed",
+            description: "Something went wrong",
+            type: "error",
+          });
+        },
+      },
+    );
+  };
+
+  const handleGoogleError = () => {
+    toast.add({
+      title: "Google OAuth Failed",
+      description: "Something went wrong",
+      type: "error",
+    });
+  };
 
   return (
     <div className={cn("flex flex-col gap-6", className)} {...props}>
@@ -78,6 +125,15 @@ export function LoginForm({
           </CardDescription>
         </CardHeader>
         <CardContent>
+          <FieldGroup className="mb-6">
+            <GoogleLogin
+              theme="outline"
+              shape="circle"
+              onSuccess={handleGoogleSuccess}
+              onError={handleGoogleError}
+            />
+          </FieldGroup>
+
           <FieldSeparator className="*:data-[slot=field-separator-content]:bg-card">
             Or continue with
           </FieldSeparator>
@@ -162,7 +218,14 @@ export function LoginForm({
 
               <Field>
                 <Button size="lg" type="submit" disabled={loginPending}>
-                  {loginPending ? <> <Spinner /> Submitting </>  : "Login"}
+                  {loginPending ? (
+                    <>
+                      {" "}
+                      <Spinner /> Submitting{" "}
+                    </>
+                  ) : (
+                    "Login"
+                  )}
                 </Button>
               </Field>
             </FieldGroup>
