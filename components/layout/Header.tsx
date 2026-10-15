@@ -13,12 +13,10 @@ import { useQueryClient } from "@tanstack/react-query";
 export default function Header() {
   const [open, setOpen] = useState(false);
   const [scrolled, setScrolled] = useState(false);
-  const queryClient = useQueryClient()
+  const queryClient = useQueryClient();
 
   const { data: user, isLoading } = useGetMe();
-  const {mutate: logout} = useLogout()
-
-
+  const { mutate: logout } = useLogout();
 
   useEffect(() => {
     const onScroll = () => setScrolled(window.scrollY > 8);
@@ -45,25 +43,24 @@ export default function Header() {
   }, []);
 
   const handleLogout = () => {
-       logout(undefined, {
-          onSuccess: () => {
-             toast.add({
-                 title: "Logout Successfully",
-                 type : "success"
-             })
-          queryClient.removeQueries({
-              queryKey: ['user']
-          })
-
-          },
-          onError : () => {
-              toast.add({
-                 title : "Logout Failed",
-                 description: "Something went wrong",
-                 type : "error"
-              })
-          }
-       })
+    logout(undefined, {
+      onSuccess: () => {
+        toast.add({
+          title: "Logout Successfully",
+          type: "success",
+        });
+        queryClient.removeQueries({
+          queryKey: ["user"],
+        });
+      },
+      onError: () => {
+        toast.add({
+          title: "Logout Failed",
+          description: "Something went wrong",
+          type: "error",
+        });
+      },
+    });
   };
 
   return (
@@ -149,16 +146,27 @@ export default function Header() {
             ))}
 
             <div className="mt-3 grid grid-cols-2 gap-2 border-t pt-4 pb-2">
-              <Button variant="outline" size="lg">
-                <Link href="/login" onClick={() => setOpen(false)}>
-                  Log in
-                </Link>
-              </Button>
-              <Button size="lg" className="bg-primary text-white">
-                <Link href="/register" onClick={() => setOpen(false)}>
-                  Get started
-                </Link>
-              </Button>
+              {!user && !isLoading && (
+                <>
+                  <Button variant="outline" size="xl" className="flex gap-2">
+                    <LogIn className="size-4" />
+                    <Link href="/login">Log in</Link>
+                  </Button>
+                  <Button
+                    size="xl"
+                    className="flex gap-2 bg-primary text-white"
+                  >
+                    <Link href="/register">Get started</Link>
+                  </Button>
+                </>
+              )}
+
+              {user && !isLoading && (
+                <Button variant="outline" size="xl" onClick={handleLogout}>
+                  <LogOut className="size-4" />
+                  Logout
+                </Button>
+              )}
             </div>
           </nav>
         </div>
