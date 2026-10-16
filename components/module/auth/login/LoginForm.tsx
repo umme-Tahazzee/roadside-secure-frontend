@@ -27,6 +27,7 @@ import { useRouter } from "next/navigation";
 import { toast } from "@/components/ui/toast";
 import { Spinner } from "@/components/ui/spinner";
 import { GoogleCredentialResponse, GoogleLogin } from "@react-oauth/google";
+import GoogleLoginComponent from "../GoogleLoginComponent";
 
 export function LoginForm({
   className,
@@ -34,8 +35,6 @@ export function LoginForm({
 }: React.ComponentProps<"div">) {
   const [showPassword, setShowPassword] = useState(false);
   const { mutate: login, isPending: loginPending } = useLogin();
-  const { mutate: googleLogin } = useGoogleAuth();
-
   const router = useRouter();
 
   const form = useForm({
@@ -71,50 +70,6 @@ export function LoginForm({
     },
   });
 
-  const handleGoogleSuccess = (
-    credentialResponse: GoogleCredentialResponse,
-  ) => {
-    const idToken = credentialResponse.credential;
-
-    if (!idToken) {
-      toast.add({
-        title: "Google OAuth Failed",
-        description: "Something went wrong",
-        type: "error",
-      });
-      return;
-    }
-
-    googleLogin(
-      { idToken },
-      {
-        onSuccess: () => {
-          toast.add({
-            title: "Google OAuth Login Successfully",
-            description: "Welcome back",
-            type: "success",
-          });
-          router.push("/");
-        },
-        onError: () => {
-          toast.add({
-            title: "Google OAuth Failed",
-            description: "Something went wrong",
-            type: "error",
-          });
-        },
-      },
-    );
-  };
-
-  const handleGoogleError = () => {
-    toast.add({
-      title: "Google OAuth Failed",
-      description: "Something went wrong",
-      type: "error",
-    });
-  };
-
   return (
     <div className={cn("flex flex-col gap-6", className)} {...props}>
       <Card>
@@ -126,12 +81,7 @@ export function LoginForm({
         </CardHeader>
         <CardContent>
           <FieldGroup className="mb-6">
-            <GoogleLogin
-              theme="outline"
-              shape="circle"
-              onSuccess={handleGoogleSuccess}
-              onError={handleGoogleError}
-            />
+            <GoogleLoginComponent />
           </FieldGroup>
 
           <FieldSeparator className="*:data-[slot=field-separator-content]:bg-card">

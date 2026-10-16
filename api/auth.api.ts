@@ -1,16 +1,21 @@
 import apiClient from "@/lib/apiClient";
+import { LoginPayload, RegistationPayload } from "@/types";
 
-interface user {
-  email: string;
-  password: string;
-}
 
-export function userLogin(payload: user) {
+export function userLogin(payload: LoginPayload) {
   return apiClient("/auth/login", {
     method: "POST",
     body: payload,
   });
 }
+
+export function userRegistration(payload:RegistationPayload){
+  return  apiClient("/auth/register", {
+      method : "POST",
+      body: payload
+  })
+}
+
 
 export function userLogout() {
   return apiClient("/auth/logout", {
@@ -28,3 +33,4 @@ export function googleOauth(payload: { idToken: string }) {
     body: payload,
   });
 }
+
