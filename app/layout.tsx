@@ -104,11 +104,12 @@ export default function RootLayout({ children }: LayoutProps<"/">) {
       )}
       suppressHydrationWarning
     >
+      <body className="min-h-full flex flex-col">
       <Providers>
-      <body className="min-h-full flex flex-col">{children}
+        {children}
           <Toaster />
-      </body>
       </Providers>
+      </body>
     </html>
   );
 }

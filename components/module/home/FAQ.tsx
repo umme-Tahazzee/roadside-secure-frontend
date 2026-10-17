@@ -1,4 +1,3 @@
-
 "use client";
 
 import { useState } from "react";
@@ -14,6 +13,7 @@ import {
 import Eyebrow from "@/utils/Eyebrow";
 import SectionTitle from "@/utils/SectionTitle";
 import Link from "next/link";
+import { cn } from "@/lib/utils";
 
 const faqs = [
   {
@@ -74,17 +74,19 @@ export default function FAQSection() {
       id="faq"
       className="relative overflow-hidden bg-background px-4 py-20 sm:px-6 lg:px-10 lg:py-24"
     >
-     
-
-      <div className="relative mx-auto max-w-7xl items-center justify-center ">
+      <div className="relative mx-auto max-w-7xl items-center justify-center">
         {/* Heading */}
         <div className="mx-auto mb-14 max-w-5xl text-center">
-        <Eyebrow label="Frequently Asked Questions" icon={CircleHelp} className="inline-flex"/>
-         <SectionTitle title="Got questions?" highlight="We've got answers." description=" Everything you need to know about requesting
-            roadside assistance, finding mechanics, and
-            getting back on the road."/>
-
-         
+          <Eyebrow
+            label="Frequently Asked Questions"
+            icon={CircleHelp}
+            className="inline-flex"
+          />
+          <SectionTitle
+            title="Got questions?"
+            highlight="We've got answers."
+            description="Everything you need to know about requesting roadside assistance, finding mechanics, and getting back on the road."
+          />
         </div>
 
         <div className="grid items-start gap-8 lg:grid-cols-[minmax(0,1fr)_340px] lg:gap-12">
@@ -98,28 +100,27 @@ export default function FAQSection() {
               return (
                 <div
                   key={faq.question}
-                  className={`overflow-hidden rounded-2xl border bg-card
-                     transition-all duration-300 ${
+                  className={cn(
+                    "overflow-hidden rounded-2xl border bg-card transition-all duration-300",
                     isOpen
                       ? "border-secondary shadow-lg shadow-primary/5"
                       : "border-primary-foreground hover:border-[#b9e7da]"
-                  }`}
+                  )}
                 >
                   <button
                     type="button"
                     aria-expanded={isOpen}
                     aria-controls={answerId}
-                    onClick={() =>
-                      setOpenIndex(isOpen ? null : index)
-                    }
+                    onClick={() => setOpenIndex(isOpen ? null : index)}
                     className="flex w-full items-center gap-4 p-5 text-left sm:p-6"
                   >
                     <span
-                      className={`flex h-11 w-11 shrink-0 items-center justify-center rounded-xl transition-colors ${
+                      className={cn(
+                        "flex h-11 w-11 shrink-0 items-center justify-center rounded-xl transition-colors",
                         isOpen
                           ? "bg-primary text-white"
                           : "bg-[#e7f9f3] text-primary"
-                      }`}
+                      )}
                     >
                       <Icon size={21} strokeWidth={1.8} />
                     </span>
@@ -130,9 +131,10 @@ export default function FAQSection() {
 
                     <ChevronDown
                       size={21}
-                      className={`shrink-0 text-primary transition-transform duration-300 ${
-                        isOpen ? "rotate-180" : ""
-                      }`}
+                      className={cn(
+                        "shrink-0 text-primary transition-transform duration-300",
+                        isOpen && "rotate-180"
+                      )}
                     />
                   </button>
 
@@ -151,15 +153,27 @@ export default function FAQSection() {
           </div>
 
           {/* Support card */}
-          <aside className="relative overflow-hidden rounded-3xl border border-secondary
-           bg-gradient-to-br from-[#e5faf3] via-[#effbf7]
-            to-white p-7 sm:p-8 lg:sticky lg:top-24">
-            <div className="absolute -right-10 -top-10 h-36 w-36 rounded-full
-             bg-[#c7f2e5]/50 blur-2xl" />
+          <aside
+            className={cn(
+              "relative overflow-hidden rounded-3xl border border-secondary",
+              "bg-gradient-to-br from-[#e5faf3] via-[#effbf7] to-white",
+              "p-7 sm:p-8 lg:sticky lg:top-24"
+            )}
+          >
+            <div
+              className={cn(
+                "absolute -right-10 -top-10 h-36 w-36 rounded-full",
+                "bg-[#c7f2e5]/50 blur-2xl"
+              )}
+            />
 
             <div className="relative">
-              <div className="flex h-14 w-14 items-center justify-center rounded-2xl
-               bg-white text-primary shadow-sm">
+              <div
+                className={cn(
+                  "flex h-14 w-14 items-center justify-center rounded-2xl",
+                  "bg-white text-primary shadow-sm"
+                )}
+              >
                 <Headset size={29} strokeWidth={1.7} />
               </div>
 
@@ -168,49 +182,53 @@ export default function FAQSection() {
               </h3>
 
               <p className="mt-3 text-sm leading-6 text-slate-600">
-                Can't find the answer you're looking for?
-                Our support team can help you find the right
-                roadside assistance.
+                Can&apos;t find the answer you&apos;re looking for? Our support
+                team can help you find the right roadside assistance.
               </p>
 
               <div className="mt-6 space-y-4">
                 <div className="flex items-center gap-3 text-sm text-slate-700">
-                  <span className="flex h-9 w-9 items-center justify-center rounded-xl
-                   bg-white text-primary">
+                  <span className="flex h-9 w-9 items-center justify-center rounded-xl bg-white text-primary">
                     <ShieldCheck size={18} />
                   </span>
                   Reliable assistance
                 </div>
 
                 <div className="flex items-center gap-3 text-sm text-slate-700">
-                  <span className="flex h-9 w-9 items-center justify-center rounded-xl
-                   bg-white text-primary">
+                  <span className="flex h-9 w-9 items-center justify-center rounded-xl bg-white text-primary">
                     <Clock3 size={18} />
                   </span>
                   Help with your request
                 </div>
               </div>
 
-              <a
+              <Link
                 href="/contact"
-                className="mt-8 inline-flex min-h-12 w-full items-center justify-center
-                 gap-2 rounded-xl bg-primary px-5 py-3 text-sm font-semibold text-white 
-                 transition-colors hover:bg-primary"
+                className={cn(
+                  "mt-8 inline-flex min-h-12 w-full items-center justify-center gap-2",
+                  "rounded-xl bg-primary px-5 py-3 text-sm font-semibold text-white",
+                  "transition-colors hover:bg-primary"
+                )}
               >
                 Contact Support
                 <ArrowRight size={18} />
-              </a>
+              </Link>
 
               <p className="mt-4 text-center text-xs leading-5 text-slate-500">
-                We're here to help you get back on the road.
+                We&apos;re here to help you get back on the road.
               </p>
             </div>
           </aside>
         </div>
 
         {/* Bottom CTA */}
-        <div className="mt-12 flex flex-col gap-5 rounded-3xl border border-secondary
-         bg-primary/15 p-6 shadow-sm sm:flex-row sm:items-center sm:justify-between sm:p-8">
+        <div
+          className={cn(
+            "mt-12 flex flex-col gap-5 rounded-3xl border border-secondary",
+            "bg-primary/15 p-6 shadow-sm",
+            "sm:flex-row sm:items-center sm:justify-between sm:p-8"
+          )}
+        >
           <div>
             <h3 className="text-lg font-bold text-slate-950 sm:text-xl">
               Ready to get back on the road?
@@ -222,9 +240,11 @@ export default function FAQSection() {
 
           <Link
             href="/request-assistance"
-            className="inline-flex min-h-12 shrink-0 items-center justify-center
-             gap-2 rounded-xl bg-primary px-6 py-3 text-sm font-semibold text-white
-              transition-colors hover:bg-primary"
+            className={cn(
+              "inline-flex min-h-12 shrink-0 items-center justify-center gap-2",
+              "rounded-xl bg-primary px-6 py-3 text-sm font-semibold text-white",
+              "transition-colors hover:bg-primary"
+            )}
           >
             Request Assistance
             <ArrowRight size={18} />

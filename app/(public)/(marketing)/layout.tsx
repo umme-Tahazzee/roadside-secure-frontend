@@ -15,12 +15,10 @@ export default function RootLayout({ children }: LayoutProps<"/">) {
   return (
     <html
       lang="en"
-      className={cn("h-full", "antialiased")}
+     
     >
       <body className="min-h-full flex flex-col">
-        {/* <Header/> */}
         <Header/>
-        
          <main className="" suppressHydrationWarning>{children}</main>
         <Footer/>
         </body>

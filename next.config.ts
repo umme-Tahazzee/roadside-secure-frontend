@@ -1,9 +1,13 @@
 import type { NextConfig } from "next";
 
 const nextConfig: NextConfig = {
-  cacheComponents: true,
-  partialPrefetching: true,
+  // cacheComponents: true,
+  // partialPrefetching: true,
   reactCompiler: true,
+  output: "export",
+  images: {
+    unoptimized: true, // required for static export with next/image
+  },
   turbopack: {
     rules: {
       "*.css": {

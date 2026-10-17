@@ -27,7 +27,7 @@ import { registerCustomerValidationSchema } from "@/validation";
 import PhoneInput from "react-phone-number-input";
 import flags from "react-phone-number-input/flags";
 import "react-phone-number-input/style.css";
-import z, { email } from "zod";
+import z from "zod";
 import { useRegistration } from "@/hooks";
 import { toast } from "@/components/ui/toast";
 import { useRouter } from "next/navigation";
