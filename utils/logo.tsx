@@ -11,7 +11,7 @@ export default function Logo({ className, imageClassName }: logoProps) {
   return (
     <div>
       <Link href="/" className={className}>
-        <Image src={logo} alt="MediFlow" className={imageClassName} />
+        <Image src={logo} alt="Roadside_secure" className={imageClassName} />
       </Link>
     </div>
   );
