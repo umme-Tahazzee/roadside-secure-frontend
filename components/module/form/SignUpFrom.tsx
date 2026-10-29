@@ -22,7 +22,7 @@ import { useForm } from "@tanstack/react-form-nextjs";
 import { useState } from "react";
 import { Eye, EyeOff } from "lucide-react";
 import { Spinner } from "@/components/ui/spinner";
-import GoogleLoginComponent from "../GoogleLoginComponent";
+import GoogleLoginComponent from "./GoogleLoginComponent";
 import { registerCustomerValidationSchema } from "@/validation";
 import PhoneInput from "react-phone-number-input";
 import flags from "react-phone-number-input/flags";

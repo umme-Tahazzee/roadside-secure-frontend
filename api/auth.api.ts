@@ -1,5 +1,5 @@
 import apiClient from "@/lib/apiClient";
-import { LoginPayload, RegistationPayload, verifyPayload } from "@/types";
+import { LoginPayload, MechanicRegistationPayload, RegistationPayload, verifyPayload } from "@/types";
 
 export function userLogin(payload: LoginPayload) {
   return apiClient("/auth/login", {
@@ -44,4 +44,12 @@ export function googleOauth(payload: { idToken: string }) {
     method: "POST",
     body: payload,
   });
+}
+
+
+export function userMechanicRegistration(payload:MechanicRegistationPayload ){
+    return apiClient("",{
+        method : "POST",
+        body : payload
+    })
 }

@@ -11,6 +11,15 @@ export interface RegistationPayload {
   phone ?: string
 }
 
+export interface MechanicRegistationPayload {
+  name : string
+  email: string;
+  password: string;
+  confirmPassword:string;
+  phone ?: string
+}
+
+
 export interface verifyPayload {
    email :string
    otp : string

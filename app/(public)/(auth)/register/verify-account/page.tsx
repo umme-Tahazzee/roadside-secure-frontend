@@ -1,4 +1,4 @@
-import VerifyAccount from "@/components/module/auth/VerfityAccount";
+import VerifyAccount from "@/components/module/form/VerfityAccount";
 import { Suspense } from "react";
 import { CarFront, ShieldCheck, Zap } from "lucide-react";
 import Logo from "@/utils/logo";

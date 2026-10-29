@@ -26,7 +26,7 @@ import { Eye, EyeOff } from "lucide-react";
 import { useRouter } from "next/navigation";
 import { toast } from "@/components/ui/toast";
 import { Spinner } from "@/components/ui/spinner";
-import GoogleLoginComponent from "../GoogleLoginComponent";
+import GoogleLoginComponent from "./GoogleLoginComponent";
 
 export function LoginForm({
   className,

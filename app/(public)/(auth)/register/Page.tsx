@@ -3,7 +3,7 @@
 import img from '@/app/assests/img/auth/login.png'
 import Image from "next/image"
 import Logo from "@/utils/logo"
-import { SignupForm } from '@/components/module/auth/SignUp/SignUpFrom'
+import { SignupForm } from '@/components/module/form/SignUpFrom'
 
 
 
