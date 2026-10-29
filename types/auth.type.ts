@@ -10,3 +10,8 @@ export interface RegistationPayload {
   confirmPassword:string;
   phone ?: string
 }
+
+export interface verifyPayload {
+   email :string
+   otp : string
+}

@@ -28,10 +28,11 @@ import PhoneInput from "react-phone-number-input";
 import flags from "react-phone-number-input/flags";
 import "react-phone-number-input/style.css";
 import z from "zod";
-import { useRegistration } from "@/hooks";
+import { useRegistration, useVerification } from "@/hooks";
 import { toast } from "@/components/ui/toast";
 import { useRouter } from "next/navigation";
 import { RegistationPayload } from "@/types";
+import { FetchError } from "ofetch";
 
 export function SignupForm({
   className,
@@ -39,14 +40,16 @@ export function SignupForm({
 }: React.ComponentProps<"div">) {
   const [showPassword, setShowPassword] = useState(false);
   const { mutate: signup, isPending: signupPending } = useRegistration();
+  const { mutate: verify, isPending } = useVerification();
+
   const router = useRouter();
 
   type UserDefaultValue = z.infer<typeof registerCustomerValidationSchema>;
   const defaultValues: UserDefaultValue = {
-    name: "karia",
-    email: "random.canvas4@gmail.com",
-    password: "Qazmlp123",
-    confirmPassword: "Qazmlp123",
+    name: "",
+    email: "",
+    password: "",
+    confirmPassword: "",
     phone: "",
   };
 
@@ -69,25 +72,29 @@ export function SignupForm({
         onSuccess: (res) => {
           if (!res.success) {
             toast.add({
-              title: "Server failed",
-              description: "Something went wrong",
+              title: "Registration failed",
+              description: res.message || "Something went wrong",
               type: "error",
             });
+            return; // eta na dile niche success toast ar redirect o cholbe
           }
+
           toast.add({
             title: "Registration Successful",
             description: "Please verify your account",
             type: "success",
           });
-          const params = new URLSearchParams({
-            email : registrationData.email
-          })
+
+          const params = new URLSearchParams({ email: registrationData.email });
           router.push(`/register/verify-account?${params.toString()}`);
         },
-        onError: () => {
+        onError: (error) => {
+          const err = error as FetchError;
+          console.log(err);
+          
           toast.add({
             title: "Registration failed",
-            description: "Something went wrong",
+            description: err.data?.message || "Something is wrong" ,
             type: "error",
           });
         },
@@ -298,18 +305,18 @@ export function SignupForm({
               }}
             </form.Field>
 
-           <Field>
-                <Button size="lg" type="submit" disabled={signupPending}>
-                  {signupPending ? (
-                    <>
-                      {" "}
-                      <Spinner /> Submitting{" "}
-                    </>
-                  ) : (
-                    "Sign up"
-                  )}
-                </Button>
-              </Field>
+            <Field>
+              <Button size="lg" type="submit" disabled={signupPending}>
+                {signupPending ? (
+                  <>
+                    {" "}
+                    <Spinner /> Submitting{" "}
+                  </>
+                ) : (
+                  "Sign up"
+                )}
+              </Button>
+            </Field>
           </FieldGroup>
         </form>
       </CardContent>

@@ -1,37 +1,53 @@
-
 import { useMutation, useQuery } from "@tanstack/react-query";
-import { googleOauth, userLogin, userLogout, userProfile, userRegistration } from "@/api";
+import {
+  googleOauth,
+  userLogin,
+  userLogout,
+  userProfile,
+  userRegistration,
+  userResendOTP,
+  userVerification,
+} from "@/api";
 
-
-export  function useLogin() {
-    return useMutation({
-         mutationFn : userLogin,
-    })   
+export function useLogin() {
+  return useMutation({
+    mutationFn: userLogin,
+  });
 }
 
-export  function useRegistration() {
-    return useMutation({
-         mutationFn : userRegistration,
-    })   
+export function useRegistration() {
+  return useMutation({
+    mutationFn: userRegistration,
+  });
 }
 
-
-export  function useLogout() {
-    return useMutation({
-         mutationFn : userLogout,
-    })   
+export function useVerification() {
+  return useMutation({
+    mutationFn: userVerification,
+  });
 }
 
-export  function useGoogleAuth() {
-    return useMutation({
-         mutationFn : googleOauth,
-    })   
-}
-export  function useGetMe() {
-    return useQuery({
-          queryKey: ['user'],
-          queryFn: userProfile,
-          retry : false
-    })
+export function useResendOtp() {
+  return useMutation({
+    mutationFn: userResendOTP,
+  });
 }
 
+export function useLogout() {
+  return useMutation({
+    mutationFn: userLogout,
+  });
+}
+
+export function useGoogleAuth() {
+  return useMutation({
+    mutationFn: googleOauth,
+  });
+}
+export function useGetMe() {
+  return useQuery({
+    queryKey: ["user"],
+    queryFn: userProfile,
+    retry: false,
+  });
+}

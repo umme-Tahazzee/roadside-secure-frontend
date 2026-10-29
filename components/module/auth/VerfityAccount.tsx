@@ -6,19 +6,29 @@ import {
   InputOTPGroup,
   InputOTPSlot,
 } from "@/components/ui/input-otp";
+import { useResendOtp, useVerification } from "@/hooks";
+
+import { useQueryClient } from "@tanstack/react-query";
 import { REGEXP_ONLY_DIGITS } from "input-otp";
 import { Mail, ShieldCheck } from "lucide-react";
-import { useSearchParams } from "next/navigation";
-import { useEffect, useState } from "react";
+import { useRouter, useSearchParams } from "next/navigation";
+import { Suspense, useEffect, useState } from "react";
 
 const RESEND_SECONDS = 30;
 
-export default function VerifyAccount() {
+function VerifyAccountForm() {
+  const router = useRouter();
   const params = useSearchParams();
+  const queryClient = useQueryClient();
   const email = params.get("email");
 
   const [otp, setOtp] = useState("");
   const [countdown, setCountdown] = useState(RESEND_SECONDS);
+
+  const { mutate: verify, isPending: isVerifying, error: verifyError, reset: resetVerify } =
+    useVerification();
+  const { mutate: resend, isPending: isResending, error: resendError } =
+    useResendOtp();
 
   // Resend countdown: ek second por por kome, 0 te ese thame jabe
   useEffect(() => {
@@ -29,22 +39,40 @@ export default function VerifyAccount() {
 
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
-    // TODO: API call ekhane (email + otp pathao)
-    console.log({ email, otp });
+    if (!email || otp.length < 6 || isVerifying) return;
+
+    verify(
+      { email, otp },
+      {
+        onSuccess: async () => {
+          // useGetMe er cache refresh, jate navbar/protected route notun user dekhe
+          await queryClient.invalidateQueries({ queryKey: ["user"] });
+          router.push("/");
+          router.refresh();
+        },
+        onError: () => setOtp(""),
+      }
+    );
   };
 
   const handleResend = () => {
-    // TODO: resend API call ekhane
+    if (!email) return;
     setOtp("");
-    setCountdown(RESEND_SECONDS);
+    resetVerify(); // purano verify error muche dey
+    resend(
+      { email },
+      { onSuccess: () => setCountdown(RESEND_SECONDS) }
+    );
   };
+
+  const errorMessage = verifyError?.message || resendError?.message;
 
   return (
     <section className="flex items-center justify-center bg-white px-6 py-12 sm:px-10">
       <div className="w-full max-w-sm">
         {/* Header */}
         <div className="text-center">
-          <div className="mx-auto flex size-16 items-center justify-center rounded-full bg-[#eafbf6] text-primary">
+          <div className="mx-auto flex size-16 items-center justify-center rounded-full bg-secondary text-primary">
             <Mail size={28} strokeWidth={1.6} />
           </div>
 
@@ -54,13 +82,9 @@ export default function VerifyAccount() {
 
           <p className="mt-2 text-sm leading-6 text-slate-500">
             Enter the 6-digit code we sent to
-            {email ? (
-              <span className="block font-medium text-slate-800">{email}</span>
-            ) : (
-              <span className="block font-medium text-slate-800">
-                your email
-              </span>
-            )}
+            <span className="block font-medium text-slate-800">
+              {email ?? "your email"}
+            </span>
           </p>
         </div>
 
@@ -74,6 +98,7 @@ export default function VerifyAccount() {
             pattern={REGEXP_ONLY_DIGITS}
             value={otp}
             onChange={setOtp}
+            disabled={isVerifying}
             containerClassName="justify-center"
           >
             <InputOTPGroup className="gap-2">
@@ -86,6 +111,12 @@ export default function VerifyAccount() {
               ))}
             </InputOTPGroup>
           </InputOTP>
+
+          {errorMessage && (
+            <p className="mt-3 text-center text-sm text-red-500">
+              {errorMessage}
+            </p>
+          )}
         </form>
 
         {/* Actions */}
@@ -93,20 +124,24 @@ export default function VerifyAccount() {
           <Button
             type="submit"
             form="otp-form"
-            disabled={otp.length < 6}
+            disabled={!email || otp.length < 6 || isVerifying}
             className="h-11 w-full"
           >
-            Verify
+            {isVerifying ? "Verifying..." : "Verify"}
           </Button>
 
           <Button
             type="button"
             variant="ghost"
             onClick={handleResend}
-            disabled={countdown > 0}
+            disabled={countdown > 0 || !email || isResending || isVerifying}
             className="h-11 w-full text-slate-600"
           >
-            {countdown > 0 ? `Resend code in ${countdown}s` : "Resend code"}
+            {isResending
+              ? "Sending..."
+              : countdown > 0
+                ? `Resend code in ${countdown}s`
+                : "Resend code"}
           </Button>
         </div>
 
@@ -117,5 +152,13 @@ export default function VerifyAccount() {
         </div>
       </div>
     </section>
+  );
+}
+
+export default function VerifyAccount() {
+  return (
+    <Suspense fallback={null}>
+      <VerifyAccountForm />
+    </Suspense>
   );
 }
