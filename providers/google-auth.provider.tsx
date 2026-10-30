@@ -4,8 +4,11 @@ import { ReactNode } from "react";
 
 export default function GoogleAuthProvider({ children }: { children: ReactNode }) {
   const clientId = process.env.NEXT_PUBLIC_GOOGLE_CLIENT_ID;
+
   if (!clientId) {
-    return <>{children}</>;
+    throw new Error(
+      "NEXT_PUBLIC_GOOGLE_CLIENT_ID is not configured"
+    );
   }
   return (
     <GoogleOAuthProvider clientId={clientId}>{children}</GoogleOAuthProvider>
