@@ -1,11 +1,11 @@
-"use client"
+"use client";
 
 import Image from "next/image";
 import Link from "next/link";
 
-import img from "@/app/assests/img/auth/login.png";
+import img from "@/assets/images/auth/login.png";
 import MechanicApplyForm from "@/components/module/form/MechanicApplyForm";
-import Logo from "@/utils/logo";
+import Logo from "@/components/shared/logo";
 
 export default function Apply() {
   return (
@@ -13,7 +13,7 @@ export default function Apply() {
       {/* Left: form */}
       <div className="flex flex-col col-span-2  px-6 py-6 sm:px-10 md:py-8">
         <header className="flex items-center justify-between gap-4">
-            <Logo imageClassName="h-20 w-auto" />
+          <Logo imageClassName="h-20 w-auto" />
           <p className="text-sm text-muted-foreground">
             <span className="hidden sm:inline">Already registered? </span>
             <Link

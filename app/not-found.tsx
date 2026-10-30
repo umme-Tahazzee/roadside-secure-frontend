@@ -1,7 +1,7 @@
 import Link from "next/link";
 import Image from "next/image";
 import { ArrowRight, CarFront, CircleHelp, House, Phone } from "lucide-react";
-import img from "../app/assests/img/not-found/404 Road to Nowhere.png";
+import img from "@/assets/images/not-found/404 Road to Nowhere.png";
 import { Button } from "@/components/ui/button";
 
 const quickLinks = [

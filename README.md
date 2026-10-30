@@ -1,32 +1,29 @@
 # RoadRescue Frontend
 
-Web client for the RoadRescue roadside assistance platform. Customers request help, mechanics accept and complete jobs, and admins approve mechanics and manage users.
+Web client for the RoadRescue roadside assistance platform. Customers request help, mechanics apply and accept jobs, and admins approve mechanics.
 
-This app talks to the [RoadRescue backend](https://github.com/umme-Tahazzee/roadrescue-backend) (Express + Prisma). Read the backend README for the full API reference.
+It talks to the [RoadRescue backend](https://github.com/umme-Tahazzee/roadrescue-backend) (Express + Prisma).
 
 ## Tech Stack
 
 | Area | Technology |
 |---|---|
 | Framework | Next.js (App Router), React, TypeScript |
-| Styling / UI | Tailwind CSS, shadcn/ui |
-| HTTP client | ofetch |
-| Server state | TanStack Query v5 |
-| Forms / validation | Tankstack Form, Zod, `@hookform/resolvers` |
-| Toasts | Sonner |
+| Styling / UI | Tailwind CSS, shadcn/ui (`components/ui`) |
+| HTTP client | ofetch (`lib/apiClient.ts`) |
+| Server state | TanStack Query |
+| Client state | Zustand |
+| Forms / validation | TanStack Form, Zod |
+| Auth | Email + OTP, Google Sign-In (`@react-oauth/google`) |
+| Lint / format | Biome |
 
 ## Getting Started
 
-### Prerequisites
-
-- Node.js 20+
-- The backend running locally (or a deployed backend URL)
-
-### Installation
+**Prerequisites:** Node.js 20+ (or Bun) and the backend running locally.
 
 ```bash
-npm install
-cp .env.example .env.local   # then fill in values
+npm install                 # or: bun install
+cp .env.example .env.local  # then fill in the values below
 npm run dev
 ```
 
@@ -34,142 +31,91 @@ Open http://localhost:3000.
 
 ### Environment variables
 
-```env
-# Where the Next.js server forwards API calls (backend origin, no trailing slash)
-BACKEND_URL=http://localhost:5000
-
-# Path the browser calls. Keep as /api/v1 to use the proxy below
-NEXT_PUBLIC_API_URL=/api/v1
-```
-
-On the backend, set `FRONTEND_URL` to this app's origin (for local development, `http://localhost:3000`).
+| Variable | Purpose |
+|---|---|
+| `NEXT_PUBLIC_API_BASE_URL` | Backend API URL, e.g. `http://localhost:5000/api/v1` |
+| `NEXT_PUBLIC_GOOGLE_CLIENT_ID` | Google OAuth client ID |
+| `NEXT_PUBLIC_SITE_URL` | Public site URL used for SEO metadata (optional) |
 
 ### Scripts
 
-| Script | Description |
+| Script | What it does |
 |---|---|
 | `npm run dev` | Start the dev server |
-| `npm run build` | Production build |
+| `npm run build` | Production build (static export to `out/`) |
 | `npm start` | Run the production build |
-| `npm run lint` | Lint |
-
-## How the API connection works
-
-### Same-origin proxy
-
-`next.config.ts` rewrites `/api/v1/*` to `${BACKEND_URL}/api/v1/*`. The browser only ever talks to the frontend origin, so:
-
-- the backend's httpOnly auth cookies are stored for the frontend origin
-- there are no cross-site cookie or CORS problems in development or production
-
-If you remove the proxy and call the backend directly, the backend must have `FRONTEND_URL` set to this origin, and in production cross-site cookies (`secure` + `sameSite=none`) may be blocked by some browsers.
-
-### Auth flow
-
-Authentication uses httpOnly cookies set by the backend (`accessToken` 15 min, `refreshToken` 7 days). The frontend never reads or stores tokens.
-
-1. `POST /auth/login` sets the cookies. The login response does not include the user, so the app then calls `GET /auth/me` and caches the result.
-2. Any request that returns 401 triggers one `POST /auth/refresh-token` call (shared across concurrent requests), then the original request is retried once. If the refresh fails, the user is treated as logged out.
-3. `RequireRole` guards each role area and redirects to `/login`, or to the user's own dashboard when the role does not match.
-4. Registration is two steps: `POST /auth/register` emails a 6-digit OTP, then `POST /auth/verify-email`. Verification does not set cookies, so send the user to `/login` afterwards.
-
-### Response and error shape
-
-The backend wraps every response as `{ success, statusCode, message, data, meta? }`. The API client unwraps `data` so hooks receive the payload directly. Failures throw an `ApiError` with `status`, `message` and optional `details` (Zod field errors).
-
-### No realtime yet
-
-The backend has no working Socket.io, so live updates use polling. Hooks for active requests and pending jobs use `refetchInterval` (about 8 seconds). Replace polling with sockets when the backend supports them.
+| `npm run lint` | Check code with Biome |
+| `npm run format` | Format code with Biome |
 
 ## Project Structure
 
 ```
-src/
-├── app/
-│   ├── layout.tsx            # Wraps the app in <Providers>
-│   ├── providers.tsx         # QueryClient, Toaster, Devtools
-│   ├── login/page.tsx
-│   ├── customer/             # layout guarded by RequireRole(["CUSTOMER"])
-│   ├── mechanic/             # layout guarded by RequireRole(["MECHANIC"])
-│   └── admin/                # layout guarded by RequireRole(["ADMIN"])
+.
+├── app/                         # Pages and routes only (Next.js App Router)
+│   ├── layout.tsx               # Root layout, wraps the app in <Providers>
+│   ├── error.tsx  loading.tsx  not-found.tsx
+│   ├── globals.css
+│   └── (public)/
+│       ├── (marketing)/         # Home, about-us, privacy, terms (shares Header/Footer layout)
+│       └── (auth)/              # login, register, register/verify-account, apply (mechanic)
+│
 ├── components/
-│   ├── ui/                   # shadcn/ui components
-│   └── require-role.tsx      # Client-side role guard
-├── hooks/
-│   ├── use-auth.ts
-│   ├── use-customer.ts
-│   ├── use-mechanic.ts
-│   └── use-admin.ts
-├── lib/
-│   ├── api.ts                # ofetch client, auto-refresh, ApiError
-│   ├── query-keys.ts         # All query keys in one place
-│   └── constants.ts          # ROLE_HOME, SERVICE_TYPES, ACTIVE_STATUSES
-└── types/
-    └── api.ts                # Shared API types
+│   ├── ui/                      # shadcn/ui primitives (button, input, card...)
+│   ├── layout/                  # Header, Footer, nav data
+│   ├── shared/                  # Small reusable pieces (Logo, SectionTitle, Eyebrow, FormSection)
+│   ├── legal/                   # Privacy / Terms page layout
+│   └── module/                  # Feature sections, grouped by feature
+│       ├── home/                # Hero, HowItWorks, FAQ...
+│       └── form/                # LoginForm, SignUpFrom, MechanicApplyForm...
+│
+├── api/                         # Functions that call the backend (one file per feature)
+├── hooks/                       # React Query hooks that use the api/ functions
+├── store/                       # Zustand stores (auth, ui)
+├── providers/                   # React context providers (React Query, Google)
+├── validation/                  # Zod schemas for forms
+├── types/                       # Shared TypeScript types
+├── data/                        # Static content (legal text)
+├── lib/                         # Helpers: apiClient, utils (cn), format
+├── assets/images/               # Images imported in code, grouped by page
+└── public/                      # Files served as-is (favicon, static files)
 ```
 
-## Data layer conventions
+### How the folders connect
 
-- **Never call `fetch`/`ofetch` in components.** Use a hook from `src/hooks`. Components only render state.
-- **Reads** use `useQuery` with a key from `qk` in `lib/query-keys.ts`.
-- **Writes** use `useMutation` and invalidate the related keys in `onSuccess`.
-- **Errors from mutations** are toasted automatically by the default `onError` in `providers.tsx`. Only add a local `onError` for special handling.
-- **FormData uploads** (mechanic documents) are passed straight to `api.post`; do not set `Content-Type` manually.
-
-### Adding a new endpoint
-
-1. Add or update the type in `src/types/api.ts`.
-2. Add a key to `qk` if it is a query.
-3. Add a hook in the matching `src/hooks/use-*.ts` file:
-
-```ts
-export const useMyThing = (id: string) =>
-  useQuery({
-    queryKey: qk.myThing(id),
-    queryFn: () => api.get<MyThing>(`/things/${id}`),
-  });
+```
+page (app/)  ->  component (components/)  ->  hook (hooks/)  ->  api function (api/)  ->  backend
+                       |
+                       +-> validation (validation/) for form rules
 ```
 
-## Roles and screens
+A component never calls the backend directly. It uses a hook, the hook calls an `api/` function, and that function uses `lib/apiClient.ts`.
 
-| Role | Area | Planned screens |
-|---|---|---|
-| Customer | `/customer` | Request help (with browser geolocation), active request tracker, history, nearby mechanics, profile |
-| Mechanic | `/mechanic` | Onboarding (document upload), online toggle and location, pending jobs, active job (start, complete with price and payment method), cash confirmation |
-| Admin | `/admin` | Dashboard stats, mechanic approval, users (block/unblock), all requests |
+## Beginner Guide: Where Do I Put...?
 
-## Status
+| I want to... | Put it in |
+|---|---|
+| Add a new page | `app/(public)/<group>/<route>/page.tsx` (file must be named `page.tsx`) |
+| Add a section of a page | `components/module/<feature>/` |
+| Add a form | `components/module/form/` and its Zod rules in `validation/` |
+| Add a small reusable piece | `components/shared/` |
+| Add a shadcn component | run `npx shadcn add <name>` (goes to `components/ui/`) |
+| Call a new backend endpoint | function in `api/`, then a hook in `hooks/` |
+| Add a shared type | `types/` |
+| Add an image | `assets/images/<page-or-feature>/` and import it with `@/assets/images/...` |
 
-**Done**
-- [x] Project setup, shadcn/ui, API proxy
-- [x] ofetch client with automatic token refresh
-- [x] TanStack Query provider, query keys, shared types
-- [x] Hooks for auth, customer, mechanic and admin endpoints
-- [x] `RequireRole` guard
-- [x] Login page
+Rules of thumb:
 
-**Planned**
-- [ ] Register and OTP verification page
-- [ ] Forgot / reset password pages
-- [ ] Customer pages
-- [ ] Mechanic pages
-- [ ] Admin pages
-- [ ] Payment UI (bKash and refunds)
-- [ ] Reviews
-- [ ] Google Sign-In
-- [ ] Realtime updates (replace polling)
+- Files that Next.js treats specially must be lowercase: `page.tsx`, `layout.tsx`, `error.tsx`, `loading.tsx`, `not-found.tsx`.
+- Use the `@/` import alias (it points to the project root), for example `import Logo from "@/components/shared/logo"`.
+- Every folder with several exports has an `index.ts` so you can import from `@/hooks`, `@/api`, `@/types`.
 
-## Backend dependencies and limitations
+## Auth Flow
 
-Some screens are blocked or limited by the current backend:
-
-- **Payments:** `PaymentRoutes` is not mounted in the backend, so `/payments/*` returns 404. Cash confirmation works through `PATCH /requests/payments/:id/confirm-cash`. bKash is a mock that returns a fake checkout URL.
-- **Mechanic active job:** there is no endpoint to list a mechanic's accepted jobs or fetch a single request, so a proper active-job screen needs a backend endpoint (for example `GET /requests/my-jobs`).
-- **Completing a job:** always use `PATCH /requests/:id/complete`. Sending `COMPLETED` to `/status` skips payment creation.
-- **`EN_ROUTE` status** exists but has no endpoint, so the UI never shows it as a reachable step.
-- **Reviews:** no backend endpoints yet.
-- **Service types** are free text on the backend and must match exactly between customer requests and mechanic profiles. `SERVICE_TYPES` in `lib/constants.ts` must match the values your backend and mechanics use.
+1. Register: the user submits the form and the backend emails an OTP.
+2. Verify: the user enters the OTP on `/register/verify-account`.
+3. Login: email/password or Google. The backend sets httpOnly cookies, so the frontend never stores tokens.
+4. Mechanics fill in the application form at `/apply`.
 
 ## Deployment
 
-Deploy to Vercel (or any Node host). Set `BACKEND_URL` to the deployed backend origin and keep `NEXT_PUBLIC_API_URL=/api/v1`. On the backend, set `NODE_ENV=production` and `FRONTEND_URL` to the deployed frontend origin.
+`next.config.ts` uses `output: "export"`, so `npm run build` creates a static site in `out/` that any static host can serve. Set the `NEXT_PUBLIC_*` variables in your host before building.

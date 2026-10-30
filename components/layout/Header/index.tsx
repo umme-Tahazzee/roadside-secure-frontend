@@ -4,7 +4,7 @@
 import { useEffect, useState } from "react";
 
 import { cn } from "@/lib/utils";
-import Logo from "@/utils/logo";
+import Logo from "@/components/shared/logo";
 import { useGetMe, useLogout } from "@/hooks";
 import { useAuthStore } from "@/store/auth.store";
 import { DesktopHeader } from "./Header-desktop";

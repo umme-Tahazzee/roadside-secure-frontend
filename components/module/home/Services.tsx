@@ -12,7 +12,7 @@ import {
   MapPin,
   Star,
 } from "lucide-react";
-import img from '@/app/assests/img/why-choose-roadsite/roadsite1.png'
+import img from '@/assets/images/why-choose-roadsite/roadsite1.png'
 
 
 const benefits = [

@@ -10,8 +10,8 @@ import {
   Clock3,
   Wallet,
 } from "lucide-react";
-import Eyebrow from "@/utils/Eyebrow";
-import SectionTitle from "@/utils/SectionTitle";
+import Eyebrow from "@/components/shared/Eyebrow";
+import SectionTitle from "@/components/shared/SectionTitle";
 import Link from "next/link";
 import { cn } from "@/lib/utils";
 

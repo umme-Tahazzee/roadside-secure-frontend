@@ -1,8 +1,8 @@
 
 
-import img from '@/app/assests/img/auth/login.png'
+import img from '@/assets/images/auth/login.png'
 import Image from "next/image"
-import Logo from "@/utils/logo"
+import Logo from "@/components/shared/logo"
 import { SignupForm } from '@/components/module/form/SignUpFrom'
 
 

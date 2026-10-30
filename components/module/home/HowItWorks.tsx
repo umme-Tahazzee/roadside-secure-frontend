@@ -1,9 +1,9 @@
-import Eyebrow from "@/utils/Eyebrow";
-import SectionTitle from "@/utils/SectionTitle";
-import card1 from "@/app/assests/img/how-it-works/Map.png";
-import card2 from "@/app/assests/img/how-it-works/card2.png";
-import card3 from "@/app/assests/img/how-it-works/card3.png";
-import card4 from "@/app/assests/img/how-it-works/card4.png";
+import Eyebrow from "@/components/shared/Eyebrow";
+import SectionTitle from "@/components/shared/SectionTitle";
+import card1 from "@/assets/images/how-it-works/Map.png";
+import card2 from "@/assets/images/how-it-works/card2.png";
+import card3 from "@/assets/images/how-it-works/card3.png";
+import card4 from "@/assets/images/how-it-works/card4.png";
 import Image from "next/image";
 import { ChevronUp } from "lucide-react";
 

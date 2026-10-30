@@ -1,4 +1,4 @@
-import Logo from "@/utils/logo";
+import Logo from "@/components/shared/logo";
 import Link from "next/link";
 import { CurrentYear } from "./current-year";
 

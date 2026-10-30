@@ -1,8 +1,8 @@
 // components/legal/LegalLayout.tsx
 import type { LucideIcon } from "lucide-react";
 import { Mail } from "lucide-react";
-import Eyebrow from "@/utils/Eyebrow";
-import SectionTitle from "@/utils/SectionTitle";
+import Eyebrow from "@/components/shared/Eyebrow";
+import SectionTitle from "@/components/shared/SectionTitle";
 import TableOfContents, { LegalSection } from "./TableOfContents";
 import Link from "next/link";
 

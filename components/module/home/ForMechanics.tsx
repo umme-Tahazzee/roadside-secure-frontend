@@ -15,9 +15,9 @@ import {
 } from "lucide-react";
 import Image from "next/image";
 import Link from "next/link";
-import map from "@/app/assests/img/services/map.jpg";
-import Eyebrow from "@/utils/Eyebrow";
-import SectionTitle from "@/utils/SectionTitle";
+import map from "@/assets/images/services/map.jpg";
+import Eyebrow from "@/components/shared/Eyebrow";
+import SectionTitle from "@/components/shared/SectionTitle";
 
 const services = [
   {
