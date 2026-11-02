@@ -10,5 +10,7 @@ export {
   Wrench,
   X,
   FileText, 
-  UploadCloud
+  UploadCloud,
+  CarFront,
+   Zap
 } from "lucide-react";
