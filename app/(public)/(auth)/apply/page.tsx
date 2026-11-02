@@ -5,13 +5,13 @@ import Link from "next/link";
 
 import img from "@/assets/images/auth/login.png";
 import MechanicApplyForm from "@/components/module/form/MechanicApplyForm";
-import Logo from "@/components/shared/logo";
+import Logo from "@/components/shared/Logo";
 
 export default function Apply() {
   return (
-    <div className="grid min-h-svh lg:grid-cols-3">
+    <div className="grid min-h-svh grid-cols-1 lg:grid-cols-3">
       {/* Left: form */}
-      <div className="flex flex-col col-span-2  px-6 py-6 sm:px-10 md:py-8">
+      <div className="flex flex-col md:col-span-2  px-2 py-2 sm:px-10 md:py-8">
         <header className="flex items-center justify-between gap-4">
           <Logo imageClassName="h-20 w-auto" />
           <p className="text-sm text-muted-foreground">

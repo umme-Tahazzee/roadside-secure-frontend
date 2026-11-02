@@ -1,35 +1,19 @@
 "use client";
 
+// biome-ignore assist/source/organizeImports: <explanation>
 import { Button } from "@/components/ui/button";
-import {
-  Field,
-  FieldError,
-  FieldGroup,
-  FieldLabel,
+import {Field,FieldError,FieldGroup,FieldLabel,
 } from "@/components/ui/field";
 import { Input } from "@/components/ui/input";
-import { formatFileSize } from "@/lib/format";
 import { cn } from "@/lib/utils";
 import { Section } from "@/components/shared/FormSection";
 import { mechanicSchema } from "@/validation";
 import { useForm } from "@tanstack/react-form-nextjs";
-import {
-  Eye,
-  EyeOff,
-  FileText,
-  Loader2,
-  MapPin,
-  Plus,
-  ShieldCheck,
-  UploadCloud,
-  UserRound,
-  Wrench,
-  X,
-} from "lucide-react";
-import Image from "next/image";
-import { useEffect, useMemo, useRef, useState } from "react";
+import * as Icons from "@/components/shared/icons";
+import {  useRef, useState } from "react";
 import { z } from "zod";
 import { documents, SERVICE_SUGGESTIONS } from "./constants";
+import { FileDropZone } from "@/components/shared/FileDropZone";
 
 type MechanicValues = z.infer<typeof mechanicSchema>;
 
@@ -45,160 +29,12 @@ const defaultValues: MechanicValues = {
   vehiclePhoto: null as unknown as File,
 };
 
-/* -------------------------------------------------------------------------- */
-/*  Small building blocks                                                     */
-/* -------------------------------------------------------------------------- */
-
-function FileDropzone({
-  id,
-  name,
-  accept,
-  value,
-  invalid,
-  hint,
-  onChange,
-  onBlur,
-}: {
-  id: string;
-  name: string;
-  accept: string[];
-  value: File | null | undefined;
-  invalid: boolean;
-  hint: string;
-  onChange: (file: File) => void;
-  onBlur: () => void;
-}) {
-  const inputRef = useRef<HTMLInputElement>(null);
-  const [dragging, setDragging] = useState(false);
-
-  const file = value instanceof File ? value : null;
-  const isImage = !!file && file.type.startsWith("image/");
-
-  const previewUrl = useMemo(
-    () => (file && isImage ? URL.createObjectURL(file) : null),
-    [file, isImage],
-  );
-  useEffect(() => {
-    return () => {
-      if (previewUrl) URL.revokeObjectURL(previewUrl);
-    };
-  }, [previewUrl]);
-
-  const pick = (files: FileList | null) => {
-    const next = files?.[0];
-    if (!next) return;
-    if (!accept.includes(next.type)) return; // schema shows the proper error on submit
-    onChange(next);
-  };
-
-  const remove = () => {
-    if (inputRef.current) inputRef.current.value = "";
-    onChange(null as unknown as File);
-    onBlur();
-  };
-
-  return (
-    <>
-      <input
-        ref={inputRef}
-        id={id}
-        name={name}
-        type="file"
-        accept={accept.join(",")}
-        className="sr-only"
-        onChange={(e) => pick(e.target.files)}
-        onBlur={onBlur}
-        aria-invalid={invalid}
-      />
-
-      {file ? (
-        <div className="flex items-center gap-3 rounded-lg border bg-muted/40 p-3">
-          {previewUrl ? (
-            // eslint-disable-next-line @next/next/no-img-element
-            <Image
-              src={previewUrl}
-              alt=""
-              className="size-12 shrink-0 rounded-md border object-cover"
-            />
-          ) : (
-            <div className="flex size-12 shrink-0 items-center justify-center rounded-md border bg-background text-muted-foreground">
-              <FileText className="size-5" />
-            </div>
-          )}
-          <div className="min-w-0 flex-1">
-            <p className="truncate text-sm font-medium">{file.name}</p>
-            <p className="text-xs text-muted-foreground">
-              {formatFileSize(file.size)}
-            </p>
-          </div>
-          <div className="flex shrink-0 items-center gap-1">
-            <Button
-              type="button"
-              variant="ghost"
-              size="sm"
-              onClick={() => inputRef.current?.click()}
-            >
-              Replace
-            </Button>
-            <Button
-              type="button"
-              variant="ghost"
-              size="icon"
-              onClick={remove}
-              aria-label={`Remove ${file.name}`}
-            >
-              <X className="size-4" />
-            </Button>
-          </div>
-        </div>
-      ) : (
-        <label
-          htmlFor={id}
-          onDragOver={(e) => {
-            e.preventDefault();
-            setDragging(true);
-          }}
-          onDragLeave={() => setDragging(false)}
-          onDrop={(e) => {
-            e.preventDefault();
-            setDragging(false);
-            pick(e.dataTransfer.files);
-          }}
-          className={cn(
-            "flex cursor-pointer flex-col items-center justify-center gap-1.5 rounded-lg border border-dashed px-4 py-6 text-center transition-colors",
-            "hover:border-primary/60 hover:bg-muted/50",
-            "has-[:focus-visible]:ring-2 has-[:focus-visible]:ring-ring",
-            dragging && "border-primary bg-primary/5",
-            invalid && "border-destructive bg-destructive/5",
-          )}
-        >
-          <UploadCloud
-            className={cn(
-              "size-6",
-              invalid ? "text-destructive" : "text-muted-foreground",
-            )}
-          />
-          <span className="text-sm font-medium">
-            <span className="text-primary">Click to upload</span> or drag and
-            drop
-          </span>
-          <span className="text-xs text-muted-foreground">{hint}</span>
-        </label>
-      )}
-    </>
-  );
-}
-
-/* -------------------------------------------------------------------------- */
-/*  Form                                                                      */
-/* -------------------------------------------------------------------------- */
 
 export default function MechanicApplyForm() {
   const [showPassword, setShowPassword] = useState(false);
   const [serviceDraft, setServiceDraft] = useState("");
   const serviceInputRef = useRef<HTMLInputElement>(null);
-  //   const { mutateAsync: register } = useMechanicRegistration();
-
+  
   const form = useForm({
     defaultValues,
     validators: {
@@ -218,23 +54,21 @@ export default function MechanicApplyForm() {
       formData.append("nidDoc", value.nidDoc);
       formData.append("licenseDoc", value.licenseDoc);
       formData.append("vehiclePhoto", value.vehiclePhoto);
-      // await register(formData);
+   
     },
   });
 
   return (
-    <div className="mx-auto w-full max-w-3xl space-y-8 px-4 py-8 sm:py-12">
+    <div className="mx-auto w-full md:max-w-3xl space-y-8 px-4 py-8 sm:py-12">
       <header className="space-y-2">
-        <div className="flex size-11 items-center justify-center rounded-xl bg-primary text-primary-foreground">
-          <Wrench className="size-5" />
+        <div className="flex size-11 items-center 
+        justify-center rounded-xl bg-primary text-primary-foreground">
+          <Icons.Wrench className="size-5" />
         </div>
         <h1 className="text-2xl font-semibold tracking-tight sm:text-3xl">
           Become a mechanic partner
         </h1>
-        <p className="max-w-xl text-sm text-muted-foreground sm:text-base">
-          Create your account, tell us what you offer, and upload your
-          documents. Our team reviews every application before you go online.
-        </p>
+
       </header>
 
       <form
@@ -248,11 +82,13 @@ export default function MechanicApplyForm() {
       >
         {/* Account */}
         <Section
-          icon={UserRound}
+          icon={Icons.UserRound}
           title="Your account"
           description="You will use these details to sign in."
         >
           <FieldGroup className="grid grid-cols-1 gap-4 sm:grid-cols-2">
+            
+            
             <form.Field name="name">
               {(field) => {
                 const isInvalid =
@@ -273,6 +109,8 @@ export default function MechanicApplyForm() {
                     {isInvalid && (
                       <FieldError errors={field.state.meta.errors} />
                     )}
+                    
+                    
                   </Field>
                 );
               }}
@@ -337,9 +175,9 @@ export default function MechanicApplyForm() {
                           className="absolute right-3 top-1/2 -translate-y-1/2 rounded text-muted-foreground transition-colors hover:text-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring"
                         >
                           {showPassword ? (
-                            <EyeOff className="size-4" />
+                            <Icons.EyeOff className="size-4" />
                           ) : (
-                            <Eye className="size-4" />
+                            <Icons.Eye className="size-4" />
                           )}
                         </button>
                       </div>
@@ -357,7 +195,7 @@ export default function MechanicApplyForm() {
 
         {/* Services */}
         <Section
-          icon={MapPin}
+          icon={Icons.MapPin}
           title="Services and coverage"
           description="Add every service you offer and how far you can travel."
         >
@@ -420,7 +258,7 @@ export default function MechanicApplyForm() {
                             aria-label={`Remove ${service}`}
                             className="rounded p-0.5 transition-colors hover:bg-primary/20 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring"
                           >
-                            <X className="size-3" />
+                            <Icons.X className="size-3" />
                           </button>
                         </span>
                       ))}
@@ -474,7 +312,7 @@ export default function MechanicApplyForm() {
                             onClick={() => addService(s)}
                             className="inline-flex items-center gap-1 rounded-md border border-dashed px-2 py-0.5 text-xs text-muted-foreground transition-colors hover:border-primary hover:text-primary focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring"
                           >
-                            <Plus className="size-3" />
+                            <Icons.Plus className="size-3" />
                             {s}
                           </button>
                         ))}
@@ -538,7 +376,7 @@ export default function MechanicApplyForm() {
 
         {/* Documents */}
         <Section
-          icon={ShieldCheck}
+          icon={Icons.ShieldCheck}
           title="Verification documents"
           description="Used only to verify your identity. Clear, uncropped photos get approved faster."
         >
@@ -546,8 +384,7 @@ export default function MechanicApplyForm() {
             {documents.map((f) => (
               <form.Field key={f.name} name={f.name}>
                 {(field) => {
-                  const isInvalid =
-                    field.state.meta.isTouched && !field.state.meta.isValid;
+                  const isInvalid =field.state.meta.isTouched && !field.state.meta.isValid;
                   return (
                     <Field
                       data-invalid={isInvalid}
@@ -556,7 +393,7 @@ export default function MechanicApplyForm() {
                       }
                     >
                       <FieldLabel htmlFor={field.name}>{f.label}</FieldLabel>
-                      <FileDropzone
+                      <FileDropZone
                         id={field.name}
                         name={field.name}
                         accept={[...f.accept]}
@@ -593,7 +430,7 @@ export default function MechanicApplyForm() {
               >
                 {isSubmitting ? (
                   <>
-                    <Loader2 className="size-4 animate-spin" />
+                    <Icons.Loader2 className="size-4 animate-spin" />
                     Submitting...
                   </>
                 ) : (

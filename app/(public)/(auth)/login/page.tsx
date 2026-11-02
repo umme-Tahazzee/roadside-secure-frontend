@@ -3,7 +3,7 @@ import { GalleryVerticalEnd } from "lucide-react"
 import Link from "next/link"
 import img from '@/assets/images/auth/login.png'
 import Image from "next/image"
-import Logo from "@/components/shared/logo"
+import Logo from "@/components/shared/Logo"
 
 
 

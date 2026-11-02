@@ -40,8 +40,6 @@ export function SignupForm({
 }: React.ComponentProps<"div">) {
   const [showPassword, setShowPassword] = useState(false);
   const { mutate: signup, isPending: signupPending } = useRegistration();
-  const { mutate: verify, isPending } = useVerification();
-
   const router = useRouter();
 
   type UserDefaultValue = z.infer<typeof registerCustomerValidationSchema>;
