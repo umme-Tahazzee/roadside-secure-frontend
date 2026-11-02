@@ -4,11 +4,12 @@ import Link from "next/link";
 import { useEffect, useState } from "react";
 import { LogIn, LogOut, Menu, X } from "lucide-react";
 import { Button } from "@/components/ui/button";
-import Logo from "@/components/shared/Logo";
+
 import { links } from "./NavData";
 import { useGetMe, useLogout } from "@/hooks";
 import { toast } from "../ui/toast";
 import { useQueryClient } from "@tanstack/react-query";
+import Logo from "../shared/Logo";
 
 export default function Header() {
   const [open, setOpen] = useState(false);
