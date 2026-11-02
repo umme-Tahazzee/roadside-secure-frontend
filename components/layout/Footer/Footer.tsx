@@ -1,6 +1,7 @@
-import Logo from "@/components/shared/Logo";
-import Link from "next/link";
+
 import { CurrentYear } from "./current-year";
+import Link from "next/link";
+import Logo from "@/components/shared/Logo";
 
 
 const columns = [
@@ -37,8 +38,8 @@ export default function Footer() {
       <div className="mx-auto max-w-7xl px-5 py-14">
         <div className="grid gap-10 md:grid-cols-[1.5fr_repeat(3,1fr)]">
           <div className="max-w-xs">
-                    <Logo className="mt-2"  imageClassName="h-30 w-fit"/>    
            
+                    <Logo className="mt-2"  imageClassName="h-30 w-fit"/>    
             <p className="mt-4 text-sm leading-relaxed text-muted-foreground">
               Roadside help from verified mechanics near you, whenever your
               vehicle lets you down.
