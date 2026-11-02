@@ -1,19 +1,24 @@
 "use client";
 
-// biome-ignore assist/source/organizeImports: <explanation>
+import { FileDropZone } from "@/components/shared/FileDropZone";
+import { Section } from "@/components/shared/FormSection";
+import * as Icons from "@/components/shared/icons";
+import { MultiFileDropZone } from "@/components/shared/MultiFileDropZone";
 import { Button } from "@/components/ui/button";
-import {Field,FieldError,FieldGroup,FieldLabel,
+import {
+  Field,
+  FieldError,
+  FieldGroup,
+  FieldLabel,
 } from "@/components/ui/field";
 import { Input } from "@/components/ui/input";
 import { cn } from "@/lib/utils";
-import { Section } from "@/components/shared/FormSection";
-import { mechanicSchema } from "@/validation";
+
 import { useForm } from "@tanstack/react-form-nextjs";
-import * as Icons from "@/components/shared/icons";
-import {  useRef, useState } from "react";
-import { z } from "zod";
+import { useRef, useState } from "react";
+import type { z } from "zod";
 import { documents, SERVICE_SUGGESTIONS } from "./constants";
-import { FileDropZone } from "@/components/shared/FileDropZone";
+import { MAX_VEHICLE_PHOTOS, mechanicSchema, PHOTO_TYPES } from "@/validation";
 
 type MechanicValues = z.infer<typeof mechanicSchema>;
 
@@ -26,15 +31,14 @@ const defaultValues: MechanicValues = {
   serviceRadius: 10,
   nidDoc: null as unknown as File,
   licenseDoc: null as unknown as File,
-  vehiclePhoto: null as unknown as File,
+  vehiclePhotos: [],
 };
-
 
 export default function MechanicApplyForm() {
   const [showPassword, setShowPassword] = useState(false);
   const [serviceDraft, setServiceDraft] = useState("");
   const serviceInputRef = useRef<HTMLInputElement>(null);
-  
+
   const form = useForm({
     defaultValues,
     validators: {
@@ -53,22 +57,25 @@ export default function MechanicApplyForm() {
       formData.append("serviceRadius", String(value.serviceRadius));
       formData.append("nidDoc", value.nidDoc);
       formData.append("licenseDoc", value.licenseDoc);
-      formData.append("vehiclePhoto", value.vehiclePhoto);
-   
+
+      // FormData can't take an array, so add each photo one by one
+      value.vehiclePhotos.forEach((photo) => {
+        formData.append("vehiclePhotos", photo);
+      });
+
+      // await register(formData);
     },
   });
 
   return (
-    <div className="mx-auto w-full md:max-w-3xl space-y-8 px-4 py-8 sm:py-12">
+    <div className="mx-auto w-full space-y-8 px-4 py-8 sm:py-12 md:max-w-3xl">
       <header className="space-y-2">
-        <div className="flex size-11 items-center 
-        justify-center rounded-xl bg-primary text-primary-foreground">
+        <div className="flex size-11 items-center justify-center rounded-xl bg-primary text-primary-foreground">
           <Icons.Wrench className="size-5" />
         </div>
         <h1 className="text-2xl font-semibold tracking-tight sm:text-3xl">
           Become a mechanic partner
         </h1>
-
       </header>
 
       <form
@@ -87,8 +94,6 @@ export default function MechanicApplyForm() {
           description="You will use these details to sign in."
         >
           <FieldGroup className="grid grid-cols-1 gap-4 sm:grid-cols-2">
-            
-            
             <form.Field name="name">
               {(field) => {
                 const isInvalid =
@@ -109,8 +114,6 @@ export default function MechanicApplyForm() {
                     {isInvalid && (
                       <FieldError errors={field.state.meta.errors} />
                     )}
-                    
-                    
                   </Field>
                 );
               }}
@@ -181,7 +184,6 @@ export default function MechanicApplyForm() {
                           )}
                         </button>
                       </div>
-                      {fieldName === "password"}
                       {isInvalid && (
                         <FieldError errors={field.state.meta.errors} />
                       )}
@@ -232,7 +234,7 @@ export default function MechanicApplyForm() {
                     </FieldLabel>
 
                     {/* Chips live inside the input box */}
-                    {/** biome-ignore lint/a11y/noStaticElementInteractions: <explanation> */}
+                    {/** biome-ignore lint/a11y/noStaticElementInteractions: clicking the box focuses the input */}
                     <div
                       role="presentation"
                       onClick={() => serviceInputRef.current?.focus()}
@@ -381,25 +383,22 @@ export default function MechanicApplyForm() {
           description="Used only to verify your identity. Clear, uncropped photos get approved faster."
         >
           <FieldGroup className="grid grid-cols-1 gap-4 sm:grid-cols-2">
-            {documents.map((f) => (
-              <form.Field key={f.name} name={f.name}>
+            {/* NID and driving license: one file each */}
+            {documents.map((doc) => (
+              <form.Field key={doc.name} name={doc.name}>
                 {(field) => {
-                  const isInvalid =field.state.meta.isTouched && !field.state.meta.isValid;
+                  const isInvalid =
+                    field.state.meta.isTouched && !field.state.meta.isValid;
                   return (
-                    <Field
-                      data-invalid={isInvalid}
-                      className={
-                        f.name === "vehiclePhoto" ? "sm:col-span-2" : undefined
-                      }
-                    >
-                      <FieldLabel htmlFor={field.name}>{f.label}</FieldLabel>
+                    <Field data-invalid={isInvalid}>
+                      <FieldLabel htmlFor={field.name}>{doc.label}</FieldLabel>
                       <FileDropZone
                         id={field.name}
                         name={field.name}
-                        accept={[...f.accept]}
+                        accept={[...doc.accept]}
                         value={field.state.value as File | null}
                         invalid={isInvalid}
-                        hint={f.hint}
+                        hint={doc.hint}
                         onChange={(file) => field.handleChange(file)}
                         onBlur={field.handleBlur}
                       />
@@ -411,6 +410,33 @@ export default function MechanicApplyForm() {
                 }}
               </form.Field>
             ))}
+
+            {/* Vehicle photos: many files */}
+            <form.Field name="vehiclePhotos">
+              {(field) => {
+                const isInvalid =
+                  field.state.meta.isTouched && !field.state.meta.isValid;
+                return (
+                  <Field data-invalid={isInvalid} className="sm:col-span-2">
+                    <FieldLabel htmlFor={field.name}>Vehicle photos</FieldLabel>
+                    <MultiFileDropZone
+                      id={field.name}
+                      name={field.name}
+                      accept={PHOTO_TYPES}
+                      value={field.state.value}
+                      invalid={isInvalid}
+                      hint={`PNG, JPG or WEBP, up to ${MAX_VEHICLE_PHOTOS} photos`}
+                      maxFiles={MAX_VEHICLE_PHOTOS}
+                      onChange={(files) => field.handleChange(files)}
+                      onBlur={field.handleBlur}
+                    />
+                    {isInvalid && (
+                      <FieldError errors={field.state.meta.errors} />
+                    )}
+                  </Field>
+                );
+              }}
+            </form.Field>
           </FieldGroup>
         </Section>
 

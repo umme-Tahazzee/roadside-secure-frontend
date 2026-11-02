@@ -101,10 +101,10 @@ export function FileDropZone({
           {previewUrl ? (
             // Plain <img> is correct here: next/image can't optimize local blob URLs.
             // eslint-disable-next-line @next/next/no-img-element
-            <Image
+            // biome-ignore lint/performance/noImgElement: <explanation>
+          <img
               src={previewUrl}
               alt=""
-              fill
               className="size-12 shrink-0 rounded-md border object-cover"
             />
           ) : (

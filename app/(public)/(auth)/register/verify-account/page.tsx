@@ -1,23 +1,24 @@
+// biome-ignore assist/source/organizeImports: <explanation>
 import VerifyAccount from "@/components/module/form/VerfityAccount";
 import { Suspense } from "react";
-import { CarFront, ShieldCheck, Zap } from "lucide-react";
+import * as Icons from '@/components/shared/icons'
 
 import SectionTitle from "@/components/shared/SectionTitle";
 import Logo from "@/components/shared/Logo";
 
 const benefits = [
   {
-    icon: ShieldCheck,
+    icon: Icons.ShieldCheck,
     title: "Secure account",
     text: "Keep your account protected.",
   },
   {
-    icon: CarFront,
+    icon: Icons.CarFront,
     title: "Access roadside services",
     text: "Find assistance when you need it.",
   },
   {
-    icon: Zap,
+    icon: Icons.Zap,
     title: "Get back on the road",
     text: "Fast, reliable help on demand.",
   },

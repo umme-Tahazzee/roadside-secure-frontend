@@ -24,10 +24,5 @@ export const SERVICE_SUGGESTIONS = [
       accept: DOC_TYPES,
       hint: "JPG, PNG, WEBP or PDF, up to 5 MB",
     },
-    {
-      name: "vehiclePhoto",
-      label: "Vehicle photo",
-      accept: PHOTO_TYPES,
-      hint: "Clear photo of your vehicle. JPG, PNG or WEBP, up to 5 MB",
-    },
+    
   ] as const;
