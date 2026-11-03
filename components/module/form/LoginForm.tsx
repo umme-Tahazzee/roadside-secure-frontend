@@ -20,6 +20,7 @@ import {
 import { Input } from "@/components/ui/input";
 import { useForm } from "@tanstack/react-form-nextjs";
 import { loginValidationSchema } from "@/validation";
+import { userProfile } from "@/api";
 import { useGoogleAuth, useLogin } from "@/hooks";
 import { useState } from "react";
 import { Eye, EyeOff } from "lucide-react";
@@ -61,8 +62,14 @@ export function LoginForm({
             description: "Welcome back",
             type: "success",
           });
-          await queryClient.invalidateQueries({ queryKey: ["user"] });
-          router.push(nextPath);
+          // refresh the current user, so admins can be sent to their panel
+          const me = await queryClient.fetchQuery({
+            queryKey: ["user"],
+            queryFn: userProfile,
+            staleTime: 0,
+          });
+          const isAdmin = me.data.role === "ADMIN";
+          router.push(nextPath !== "/" ? nextPath : isAdmin ? "/admin" : "/");
         },
         onError: (err) => {
           toast.add({
