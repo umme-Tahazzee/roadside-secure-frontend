@@ -23,7 +23,10 @@ import { loginValidationSchema } from "@/validation";
 import { useGoogleAuth, useLogin } from "@/hooks";
 import { useState } from "react";
 import { Eye, EyeOff } from "lucide-react";
-import { useRouter } from "next/navigation";
+import { useRouter, useSearchParams } from "next/navigation";
+import { useQueryClient } from "@tanstack/react-query";
+import { getErrorMessage } from "@/lib/error";
+import { safeNextPath } from "@/lib/redirect";
 import { toast } from "@/components/ui/toast";
 import { Spinner } from "@/components/ui/spinner";
 import GoogleLoginComponent from "./GoogleLoginComponent";
@@ -35,6 +38,8 @@ export function LoginForm({
   const [showPassword, setShowPassword] = useState(false);
   const { mutate: login, isPending: loginPending } = useLogin();
   const router = useRouter();
+  const queryClient = useQueryClient();
+  const nextPath = safeNextPath(useSearchParams().get("next"));
 
   const form = useForm({
     defaultValues: {
@@ -50,18 +55,19 @@ export function LoginForm({
         password: value.password,
       };
       login(loginData, {
-        onSuccess: (data) => {
+        onSuccess: async () => {
           toast.add({
             title: "Login Successfully",
             description: "Welcome back",
             type: "success",
           });
-          router.push("/");
+          await queryClient.invalidateQueries({ queryKey: ["user"] });
+          router.push(nextPath);
         },
         onError: (err) => {
           toast.add({
             title: "Authorization failed",
-            description: "Something went wrong",
+            description: getErrorMessage(err),
             type: "error",
           });
         },

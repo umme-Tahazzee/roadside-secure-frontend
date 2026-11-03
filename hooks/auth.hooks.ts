@@ -3,7 +3,6 @@ import {
   googleOauth,
   userLogin,
   userLogout,
-  userMechanicRegistration,
   userProfile,
   userRegistration,
   userResendOTP,
@@ -23,11 +22,7 @@ export function useRegistration() {
 }
 
 
-export function useMechanicRegistration(){
-  return {
-     mutationFn : userMechanicRegistration
-  }    
-}
+
 
 export function useVerification() {
   return useMutation({

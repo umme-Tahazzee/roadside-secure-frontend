@@ -7,6 +7,8 @@ import {
   InputOTPSlot,
 } from "@/components/ui/input-otp";
 import { useResendOtp, useVerification } from "@/hooks";
+import { getErrorMessage } from "@/lib/error";
+import { safeNextPath } from "@/lib/redirect";
 
 import { useQueryClient } from "@tanstack/react-query";
 import { REGEXP_ONLY_DIGITS } from "input-otp";
@@ -21,6 +23,8 @@ function VerifyAccountForm() {
   const params = useSearchParams();
   const queryClient = useQueryClient();
   const email = params.get("email");
+  // Mechanics continue to the documents step; customers go home
+  const nextPath = safeNextPath(params.get("next"));
 
   const [otp, setOtp] = useState("");
   const [countdown, setCountdown] = useState(RESEND_SECONDS);
@@ -47,7 +51,7 @@ function VerifyAccountForm() {
         onSuccess: async () => {
           // useGetMe er cache refresh, jate navbar/protected route notun user dekhe
           await queryClient.invalidateQueries({ queryKey: ["user"] });
-          router.push("/");
+          router.push(nextPath);
           router.refresh();
         },
         onError: () => setOtp(""),
@@ -65,7 +69,8 @@ function VerifyAccountForm() {
     );
   };
 
-  const errorMessage = verifyError?.message || resendError?.message;
+  const apiError = verifyError ?? resendError;
+  const errorMessage = apiError ? getErrorMessage(apiError) : null;
 
   return (
     <section className="flex items-center justify-center bg-white px-6 py-12 sm:px-10">

@@ -1,6 +1,7 @@
 import { LoginForm } from "@/components/module/form/LoginForm"
 import { GalleryVerticalEnd } from "lucide-react"
 import Link from "next/link"
+import { Suspense } from "react"
 import img from '@/assets/images/auth/login.png'
 import Image from "next/image"
 import Logo from "@/components/shared/Logo"
@@ -18,7 +19,9 @@ export default function LoginPage() {
         </div>
         <div className="flex items-center justify-center">
           <div className="w-full max-w-md">
-            <LoginForm />
+            <Suspense fallback={null}>
+              <LoginForm />
+            </Suspense>
           </div>
         </div>
       </div>

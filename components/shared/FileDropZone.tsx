@@ -5,18 +5,18 @@ import * as Icons from "@/components/shared/icons";
 import { formatFileSize } from "@/lib/format";
 import { cn } from "@/lib/utils";
 import { useEffect, useRef, useState } from "react";
-import Image from "next/image";
 
-// Props = the data this component receives from its parent
+
+
 interface FileDropZoneProps {
-  id: string; // links the <label> with the hidden <input>
-  name: string; // form field name
-  accept: string[]; // allowed file types, e.g. ["image/png", "application/pdf"]
-  value: File | null | undefined; // the currently selected file
-  invalid: boolean; // true when the form shows an error for this field
-  hint: string; // small helper text, e.g. "PNG or PDF, max 5MB"
-  onChange: (file: File) => void; // tell the parent a file was picked / removed
-  onBlur: () => void; // tell the parent the field was touched
+  id: string; 
+  name: string; 
+  accept: string[]; 
+  value: File | null | undefined; 
+  invalid: boolean; 
+  hint: string; 
+  onChange: (file: File) => void; 
+  onBlur: () => void; 
 }
 
 export function FileDropZone({
@@ -29,21 +29,13 @@ export function FileDropZone({
   onChange,
   onBlur,
 }: FileDropZoneProps) {
-  // Reference to the hidden <input type="file">, so we can click or clear it
+  
   const inputRef = useRef<HTMLInputElement>(null);
-
-  // True while the user is dragging a file over the drop area
   const [isDragging, setIsDragging] = useState(false);
-
-  // A temporary browser URL used to show an image preview
   const [previewUrl, setPreviewUrl] = useState<string | null>(null);
-
-  // Make sure we only use `value` when it is a real File
   const selectedFile = value instanceof File ? value : null;
 
-  // Create a preview URL when a file is selected.
-  // The cleanup function runs when the file changes or the component unmounts,
-  // and it frees the memory used by the old URL.
+  
   useEffect(() => {
     const isImage = selectedFile?.type.startsWith("image/");
 
@@ -71,18 +63,13 @@ export function FileDropZone({
 
   // Runs when the user clicks the X button
   const handleRemove = () => {
-    // Clear the hidden input so the same file can be picked again
     if (inputRef.current) inputRef.current.value = "";
-
-    // The form types this field as `File` and uses `null as unknown as File`
-    // as its empty value, so we do the same here to stay consistent.
     onChange(null as unknown as File);
     onBlur();
   };
 
   return (
     <>
-      {/* Hidden real input. The label / buttons below open it. */}
       <input
         ref={inputRef}
         id={id}
@@ -99,8 +86,6 @@ export function FileDropZone({
         // ---------- A file is selected: show its details ----------
         <div className="flex items-center gap-3 rounded-lg border bg-muted/40 p-3">
           {previewUrl ? (
-            // Plain <img> is correct here: next/image can't optimize local blob URLs.
-            // eslint-disable-next-line @next/next/no-img-element
             // biome-ignore lint/performance/noImgElement: <explanation>
           <img
               src={previewUrl}
@@ -108,7 +93,6 @@ export function FileDropZone({
               className="size-12 shrink-0 rounded-md border object-cover"
             />
           ) : (
-            // Not an image (for example a PDF): show a file icon instead
             <div className="flex size-12 shrink-0 items-center justify-center rounded-md border bg-background text-muted-foreground">
               <Icons.FileText className="size-5" />
             </div>
@@ -146,12 +130,12 @@ export function FileDropZone({
         <label
           htmlFor={id}
           onDragOver={(e) => {
-            e.preventDefault(); // required, otherwise the browser blocks dropping
+            e.preventDefault(); 
             setIsDragging(true);
           }}
           onDragLeave={() => setIsDragging(false)}
           onDrop={(e) => {
-            e.preventDefault(); // stop the browser from opening the file
+            e.preventDefault(); 
             setIsDragging(false);
             handleFiles(e.dataTransfer.files);
           }}
