@@ -27,7 +27,7 @@ export function PageHeader({
 }
 
 // colour by meaning, so the same word looks the same on every page
-const GOOD = "bg-emerald-100 text-emerald-700";
+const GOOD = "bg-primary text-emerald-700";
 const WAIT = "bg-amber-100 text-amber-700";
 const BAD = "bg-red-100 text-red-700";
 const INFO = "bg-sky-100 text-sky-700";

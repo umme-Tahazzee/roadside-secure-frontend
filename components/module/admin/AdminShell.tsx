@@ -33,7 +33,7 @@ export function AdminShell({ children }: { children: ReactNode }) {
   const user = data?.data;
   const notLoggedIn = Boolean(error) && getErrorStatus(error) === 401;
 
-  // not logged in -> login page, and come back here afterwards
+ 
   useEffect(() => {
     if (notLoggedIn)
       router.replace(`/login?next=${encodeURIComponent(pathname)}`);
