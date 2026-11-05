@@ -1,10 +1,8 @@
 "use client";
 
+import { StatCard } from "@/components/shared/StateCard";
 import { useAdminDashboard } from "@/hooks";
 import { DataState, PageHeader } from "./ui";
-import { StatCard } from "@/components/shared/StateCard";
-
-
 
 export function DashboardView() {
   const { data, isLoading, error } = useAdminDashboard();

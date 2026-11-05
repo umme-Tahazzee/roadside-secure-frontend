@@ -1,22 +1,20 @@
 "use client";
 
-import { Button } from "@/components/ui/button";
+import { useEffect, useRef, useState } from "react";
 import * as Icons from "@/components/shared/icons";
+import { Button } from "@/components/ui/button";
 import { formatFileSize } from "@/lib/format";
 import { cn } from "@/lib/utils";
-import { useEffect, useRef, useState } from "react";
-
-
 
 interface FileDropZoneProps {
-  id: string; 
-  name: string; 
-  accept: string[]; 
-  value: File | null | undefined; 
-  invalid: boolean; 
-  hint: string; 
-  onChange: (file: File) => void; 
-  onBlur: () => void; 
+  id: string;
+  name: string;
+  accept: string[];
+  value: File | null | undefined;
+  invalid: boolean;
+  hint: string;
+  onChange: (file: File) => void;
+  onBlur: () => void;
 }
 
 export function FileDropZone({
@@ -29,13 +27,11 @@ export function FileDropZone({
   onChange,
   onBlur,
 }: FileDropZoneProps) {
-  
   const inputRef = useRef<HTMLInputElement>(null);
   const [isDragging, setIsDragging] = useState(false);
   const [previewUrl, setPreviewUrl] = useState<string | null>(null);
   const selectedFile = value instanceof File ? value : null;
 
-  
   useEffect(() => {
     const isImage = selectedFile?.type.startsWith("image/");
 
@@ -87,7 +83,7 @@ export function FileDropZone({
         <div className="flex items-center gap-3 rounded-lg border bg-muted/40 p-3">
           {previewUrl ? (
             // biome-ignore lint/performance/noImgElement: <explanation>
-          <img
+            <img
               src={previewUrl}
               alt=""
               className="size-12 shrink-0 rounded-md border object-cover"
@@ -130,12 +126,12 @@ export function FileDropZone({
         <label
           htmlFor={id}
           onDragOver={(e) => {
-            e.preventDefault(); 
+            e.preventDefault();
             setIsDragging(true);
           }}
           onDragLeave={() => setIsDragging(false)}
           onDrop={(e) => {
-            e.preventDefault(); 
+            e.preventDefault();
             setIsDragging(false);
             handleFiles(e.dataTransfer.files);
           }}

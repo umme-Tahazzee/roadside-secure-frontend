@@ -1,5 +1,11 @@
 import apiClient from "@/lib/apiClient";
-import { ApiResponse, CurrentUser, LoginPayload, RegistationPayload, verifyPayload } from "@/types";
+import type {
+  ApiResponse,
+  CurrentUser,
+  LoginPayload,
+  RegistationPayload,
+  verifyPayload,
+} from "@/types";
 
 export function userLogin(payload: LoginPayload) {
   return apiClient("/auth/login", {
@@ -30,7 +36,7 @@ export function userResendOTP(payload: { email: string }) {
 }
 
 export function userLogout() {
-  return apiClient("/auth/logout", {
+  return apiClient<ApiResponse>("/auth/logout", {
     method: "POST",
   });
 }
@@ -45,5 +51,3 @@ export function googleOauth(payload: { idToken: string }) {
     body: payload,
   });
 }
-
-

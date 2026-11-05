@@ -1,10 +1,10 @@
 // components/legal/LegalLayout.tsx
 import type { LucideIcon } from "lucide-react";
 import { Mail } from "lucide-react";
+import Link from "next/link";
 import Eyebrow from "@/components/shared/Eyebrow";
 import SectionTitle from "@/components/shared/SectionTitle";
-import TableOfContents, { LegalSection } from "./TableOfContents";
-import Link from "next/link";
+import TableOfContents, { type LegalSection } from "./TableOfContents";
 
 type LegalLayoutProps = {
   eyebrow: string;
@@ -108,7 +108,7 @@ export default function LegalLayout({
                   href="mailto:tahazzeekaria1@gmail.com"
                   className="font-medium text-primary hover:underline"
                 >
-                 tahazzeekaria1@gmail.com
+                  tahazzeekaria1@gmail.com
                 </Link>
               </p>
             </div>

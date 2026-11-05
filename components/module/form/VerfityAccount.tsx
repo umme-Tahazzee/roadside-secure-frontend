@@ -1,5 +1,10 @@
 "use client";
 
+import { useQueryClient } from "@tanstack/react-query";
+import { REGEXP_ONLY_DIGITS } from "input-otp";
+import { Mail, ShieldCheck } from "lucide-react";
+import { useRouter, useSearchParams } from "next/navigation";
+import { Suspense, useEffect, useState } from "react";
 import { Button } from "@/components/ui/button";
 import {
   InputOTP,
@@ -9,12 +14,6 @@ import {
 import { useResendOtp, useVerification } from "@/hooks";
 import { getErrorMessage } from "@/lib/error";
 import { safeNextPath } from "@/lib/redirect";
-
-import { useQueryClient } from "@tanstack/react-query";
-import { REGEXP_ONLY_DIGITS } from "input-otp";
-import { Mail, ShieldCheck } from "lucide-react";
-import { useRouter, useSearchParams } from "next/navigation";
-import { Suspense, useEffect, useState } from "react";
 
 const RESEND_SECONDS = 30;
 
@@ -29,10 +28,17 @@ function VerifyAccountForm() {
   const [otp, setOtp] = useState("");
   const [countdown, setCountdown] = useState(RESEND_SECONDS);
 
-  const { mutate: verify, isPending: isVerifying, error: verifyError, reset: resetVerify } =
-    useVerification();
-  const { mutate: resend, isPending: isResending, error: resendError } =
-    useResendOtp();
+  const {
+    mutate: verify,
+    isPending: isVerifying,
+    error: verifyError,
+    reset: resetVerify,
+  } = useVerification();
+  const {
+    mutate: resend,
+    isPending: isResending,
+    error: resendError,
+  } = useResendOtp();
 
   // Resend countdown: ek second por por kome, 0 te ese thame jabe
   useEffect(() => {
@@ -55,7 +61,7 @@ function VerifyAccountForm() {
           router.refresh();
         },
         onError: () => setOtp(""),
-      }
+      },
     );
   };
 
@@ -63,10 +69,7 @@ function VerifyAccountForm() {
     if (!email) return;
     setOtp("");
     resetVerify(); // purano verify error muche dey
-    resend(
-      { email },
-      { onSuccess: () => setCountdown(RESEND_SECONDS) }
-    );
+    resend({ email }, { onSuccess: () => setCountdown(RESEND_SECONDS) });
   };
 
   const apiError = verifyError ?? resendError;

@@ -1,18 +1,18 @@
 "use client";
 
-import { useState } from "react";
 import {
   ArrowRight,
   ChevronDown,
   CircleHelp,
+  Clock3,
   Headset,
   ShieldCheck,
-  Clock3,
   Wallet,
 } from "lucide-react";
+import Link from "next/link";
+import { useState } from "react";
 import Eyebrow from "@/components/shared/Eyebrow";
 import SectionTitle from "@/components/shared/SectionTitle";
-import Link from "next/link";
 import { cn } from "@/lib/utils";
 
 const faqs = [
@@ -104,7 +104,7 @@ export default function FAQSection() {
                     "overflow-hidden rounded-2xl border bg-card transition-all duration-300",
                     isOpen
                       ? "border-secondary shadow-lg shadow-primary/5"
-                      : "border-primary-foreground hover:border-[#b9e7da]"
+                      : "border-primary-foreground hover:border-[#b9e7da]",
                   )}
                 >
                   <button
@@ -119,7 +119,7 @@ export default function FAQSection() {
                         "flex h-11 w-11 shrink-0 items-center justify-center rounded-xl transition-colors",
                         isOpen
                           ? "bg-primary text-white"
-                          : "bg-[#e7f9f3] text-primary"
+                          : "bg-[#e7f9f3] text-primary",
                       )}
                     >
                       <Icon size={21} strokeWidth={1.8} />
@@ -133,7 +133,7 @@ export default function FAQSection() {
                       size={21}
                       className={cn(
                         "shrink-0 text-primary transition-transform duration-300",
-                        isOpen && "rotate-180"
+                        isOpen && "rotate-180",
                       )}
                     />
                   </button>
@@ -157,13 +157,13 @@ export default function FAQSection() {
             className={cn(
               "relative overflow-hidden rounded-3xl border border-secondary",
               "bg-gradient-to-br from-[#e5faf3] via-[#effbf7] to-white",
-              "p-7 sm:p-8 lg:sticky lg:top-24"
+              "p-7 sm:p-8 lg:sticky lg:top-24",
             )}
           >
             <div
               className={cn(
                 "absolute -right-10 -top-10 h-36 w-36 rounded-full",
-                "bg-[#c7f2e5]/50 blur-2xl"
+                "bg-[#c7f2e5]/50 blur-2xl",
               )}
             />
 
@@ -171,7 +171,7 @@ export default function FAQSection() {
               <div
                 className={cn(
                   "flex h-14 w-14 items-center justify-center rounded-2xl",
-                  "bg-white text-primary shadow-sm"
+                  "bg-white text-primary shadow-sm",
                 )}
               >
                 <Headset size={29} strokeWidth={1.7} />
@@ -207,7 +207,7 @@ export default function FAQSection() {
                 className={cn(
                   "mt-8 inline-flex min-h-12 w-full items-center justify-center gap-2",
                   "rounded-xl bg-primary px-5 py-3 text-sm font-semibold text-white",
-                  "transition-colors hover:bg-primary"
+                  "transition-colors hover:bg-primary",
                 )}
               >
                 Contact Support
@@ -226,7 +226,7 @@ export default function FAQSection() {
           className={cn(
             "mt-12 flex flex-col gap-5 rounded-3xl border border-secondary",
             "bg-primary/15 p-6 shadow-sm",
-            "sm:flex-row sm:items-center sm:justify-between sm:p-8"
+            "sm:flex-row sm:items-center sm:justify-between sm:p-8",
           )}
         >
           <div>
@@ -243,7 +243,7 @@ export default function FAQSection() {
             className={cn(
               "inline-flex min-h-12 shrink-0 items-center justify-center gap-2",
               "rounded-xl bg-primary px-6 py-3 text-sm font-semibold text-white",
-              "transition-colors hover:bg-primary"
+              "transition-colors hover:bg-primary",
             )}
           >
             Request Assistance

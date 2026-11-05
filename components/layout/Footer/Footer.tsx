@@ -1,8 +1,6 @@
-
-import { CurrentYear } from "./current-year";
 import Link from "next/link";
 import Logo from "@/components/shared/Logo";
-
+import { CurrentYear } from "./current-year";
 
 const columns = [
   {
@@ -38,8 +36,7 @@ export default function Footer() {
       <div className="mx-auto max-w-7xl px-5 py-14">
         <div className="grid gap-10 md:grid-cols-[1.5fr_repeat(3,1fr)]">
           <div className="max-w-xs">
-           
-                    <Logo className="mt-2"  imageClassName="h-30 w-fit"/>    
+            <Logo className="mt-2" imageClassName="h-30 w-fit" />
             <p className="mt-4 text-sm leading-relaxed text-muted-foreground">
               Roadside help from verified mechanics near you, whenever your
               vehicle lets you down.
@@ -66,7 +63,9 @@ export default function Footer() {
         </div>
 
         <div className="mt-12 flex flex-col gap-3 border-t pt-6 text-sm text-muted-foreground sm:flex-row sm:items-center sm:justify-between">
-          <p><CurrentYear/> RoadRescue. All rights reserved.</p>
+          <p>
+            <CurrentYear /> RoadRescue. All rights reserved.
+          </p>
           <div className="flex gap-5">
             <Link href="/privacy" className="hover:text-foreground">
               Privacy

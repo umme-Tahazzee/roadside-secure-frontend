@@ -21,9 +21,6 @@ export function useRegistration() {
   });
 }
 
-
-
-
 export function useVerification() {
   return useMutation({
     mutationFn: userVerification,

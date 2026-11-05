@@ -1,9 +1,11 @@
-"use client"
+"use client";
+import {
+  type GoogleCredentialResponse,
+  GoogleLogin,
+} from "@react-oauth/google";
+import { useRouter } from "next/navigation";
 import { toast } from "@/components/ui/toast";
 import { useGoogleAuth } from "@/hooks";
-import { GoogleCredentialResponse, GoogleLogin } from "@react-oauth/google";
-import { useRouter } from "next/navigation";
-
 
 export default function GoogleLoginComponent() {
   const { mutate: googleLogin } = useGoogleAuth();

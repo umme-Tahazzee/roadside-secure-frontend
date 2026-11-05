@@ -1,8 +1,8 @@
+import { Car, Check, MapPin, Wrench } from "lucide-react";
 import Image from "next/image";
 import Link from "next/link";
-import { Car, Check, MapPin, Wrench } from "lucide-react";
-import { Button } from "@/components/ui/button";
 import banner from "@/assets/images/hero/right-site.png";
+import { Button } from "@/components/ui/button";
 
 const highlights = [
   "Verified mechanics",

@@ -1,15 +1,13 @@
-
 "use client";
 
 import { useEffect, useState } from "react";
-
-import { cn } from "@/lib/utils";
 import Logo from "@/components/shared/Logo";
+import { toast } from "@/components/ui/toast";
 import { useGetMe, useLogout } from "@/hooks";
+import { cn } from "@/lib/utils";
 import { useAuthStore } from "@/store/auth.store";
 import { DesktopHeader } from "./Header-desktop";
 import { MobileHeader, MobileMenuButton } from "./Header-mobile";
-import { toast } from "@/components/ui/toast";
 
 export default function Header() {
   const [menuOpen, setMenuOpen] = useState(false);
@@ -86,7 +84,7 @@ export default function Header() {
         "sticky top-0 z-50 w-full border-b transition-all duration-300",
         scrolled || menuOpen
           ? "border-border/70 bg-background/90 shadow-sm backdrop-blur-xl"
-          : "border-transparent bg-background/70 backdrop-blur-md"
+          : "border-transparent bg-background/70 backdrop-blur-md",
       )}
     >
       <div className="mx-auto flex h-20 max-w-7xl items-center justify-between gap-4 px-5">

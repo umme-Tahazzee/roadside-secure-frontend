@@ -1,26 +1,23 @@
-
 "use client";
 
-import Image from "next/image";
 import {
-  ShieldCheck,
   Clock3,
-  Wallet,
   Headset,
-  Users,
-  UserRoundCheck,
   MapPin,
+  ShieldCheck,
   Star,
+  UserRoundCheck,
+  Users,
+  Wallet,
 } from "lucide-react";
-import img from '@/assets/images/why-choose-roadsite/roadsite1.png'
-
+import Image from "next/image";
+import img from "@/assets/images/why-choose-roadsite/roadsite1.png";
 
 const benefits = [
   {
     icon: ShieldCheck,
     title: "Verified Mechanics",
-    description:
-      "Skilled and background-checked mechanics you can trust.",
+    description: "Skilled and background-checked mechanics you can trust.",
   },
   {
     icon: Clock3,
@@ -68,8 +65,6 @@ export default function WhyChooseUs() {
       id="why-choose-us"
       className="relative overflow-hidden bg-background px-5 py-16 sm:px-8 lg:px-16 lg:py-24 mt-10"
     >
-      
-
       <div className="relative mx-auto max-w-7xl">
         <div className="grid items-center gap-12 lg:grid-cols-2 lg:gap-14">
           {/* Left content */}
@@ -79,15 +74,17 @@ export default function WhyChooseUs() {
               Why choose Roadside Secure
             </div>
 
-            <h2 className="max-w-xl text-3xl font-bold leading-tight tracking-tight text-dark
-             sm:text-4xl lg:text-[46px]">
+            <h2
+              className="max-w-xl text-3xl font-bold leading-tight tracking-tight text-dark
+             sm:text-4xl lg:text-[46px]"
+            >
               Reliable roadside support whenever{" "}
               <span className="text-[#008577]">you need it</span>
             </h2>
 
             <p className="mt-5 max-w-xl text-base leading-7 text-slate-600 sm:text-lg">
-              We connect you with verified, professional mechanics
-              so you can get back on the road quickly and safely.
+              We connect you with verified, professional mechanics so you can
+              get back on the road quickly and safely.
             </p>
 
             {/* Benefit cards */}
@@ -102,8 +99,10 @@ export default function WhyChooseUs() {
                      p-5 transition-all duration-300 hover:-translate-y-1 hover:border-primary/15
                       hover:shadow-lg hover:shadow-primary/5"
                   >
-                    <div className="mb-4 flex h-14 w-14 items-center
-                     justify-center rounded-full bg-secondary text-[#008577] transition-colors group-hover:bg-[#008577] group-hover:text-white">
+                    <div
+                      className="mb-4 flex h-14 w-14 items-center
+                     justify-center rounded-full bg-secondary text-[#008577] transition-colors group-hover:bg-[#008577] group-hover:text-white"
+                    >
                       <Icon size={27} strokeWidth={2} />
                     </div>
 

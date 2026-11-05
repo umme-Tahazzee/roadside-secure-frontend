@@ -1,15 +1,14 @@
 "use client";
 
+import { useQueryClient } from "@tanstack/react-query";
+import { LogIn, LogOut, Menu, X } from "lucide-react";
 import Link from "next/link";
 import { useEffect, useState } from "react";
-import { LogIn, LogOut, Menu, X } from "lucide-react";
 import { Button } from "@/components/ui/button";
-
-import { links } from "./NavData";
 import { useGetMe, useLogout } from "@/hooks";
-import { toast } from "../ui/toast";
-import { useQueryClient } from "@tanstack/react-query";
 import Logo from "../shared/Logo";
+import { toast } from "../ui/toast";
+import { links } from "./NavData";
 
 export default function Header() {
   const [open, setOpen] = useState(false);

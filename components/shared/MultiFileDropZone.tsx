@@ -1,11 +1,11 @@
 /** biome-ignore-all lint/performance/noImgElement: blob URLs can't use next/image */
 "use client";
 
-import { Button } from "@/components/ui/button";
+import { useEffect, useState } from "react";
 import * as Icons from "@/components/shared/icons";
+import { Button } from "@/components/ui/button";
 import { formatFileSize } from "@/lib/format";
 import { cn } from "@/lib/utils";
-import { useEffect, useState } from "react";
 
 /* -------------------------------------------------------------------------- */
 /*  One row in the list (preview + name + size + remove button)               */
@@ -149,8 +149,6 @@ export function MultiFileDropZone({
           handleFiles(e.target.files);
           // Reset so the same file can be picked again after removing it
           e.target.value = "";
-        
-          
         }}
         onBlur={onBlur}
         aria-invalid={invalid}

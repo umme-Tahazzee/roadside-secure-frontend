@@ -1,5 +1,5 @@
-import Link from "next/link";
 import { ArrowRight, LogIn, LogOut, Menu, X } from "lucide-react";
+import Link from "next/link";
 
 import { Button, buttonVariants } from "@/components/ui/button";
 import { cn } from "@/lib/utils";
@@ -73,7 +73,7 @@ export function MobileHeader({
                 href="/login"
                 className={cn(
                   buttonVariants({ variant: "outline" }),
-                  "w-full gap-2 rounded-xl"
+                  "w-full gap-2 rounded-xl",
                 )}
               >
                 <LogIn className="size-4" />

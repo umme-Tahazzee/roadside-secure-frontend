@@ -124,20 +124,18 @@ function ProfileForm() {
   return (
     <div className="mx-auto w-full space-y-6">
       <header className="space-y-4">
-      
-         <div className="space-y-2 flex gap-2 mb-5">
-           <div className="flex size-11 items-center justify-center rounded-xl bg-primary text-primary-foreground">
-          <Icons.Wrench className="size-5" />
-        </div> 
-         <div>
-           <h1 className="text-2xl font-semibold tracking-tight sm:text-3xl">
-            Complete your application
-          </h1>
-          
-         </div>
+        <div className="space-y-2 flex gap-2 mb-5">
+          <div className="flex size-11 items-center justify-center rounded-xl bg-primary text-primary-foreground">
+            <Icons.Wrench className="size-5" />
+          </div>
+          <div>
+            <h1 className="text-2xl font-semibold tracking-tight sm:text-3xl">
+              Complete your application
+            </h1>
+          </div>
         </div>
 
-         <ApplySteps current={3}/>
+        <ApplySteps current={3} />
       </header>
 
       <form
@@ -178,7 +176,7 @@ function ProfileForm() {
                       </FieldLegend>
                       <div className="flex flex-wrap gap-2">
                         {SERVICE_OPTIONS.map(({ value, label }) => {
-                        const active = selected.includes(value);
+                          const active = selected.includes(value);
                           return (
                             <button
                               key={value}
@@ -203,7 +201,6 @@ function ProfileForm() {
                       </div>
                     </FieldSet>
                     {isInvalid && (
-                      
                       <FieldError errors={field.state.meta.errors} />
                     )}
                   </Field>

@@ -1,11 +1,11 @@
-import Eyebrow from "@/components/shared/Eyebrow";
-import SectionTitle from "@/components/shared/SectionTitle";
-import card1 from "@/assets/images/how-it-works/Map.png";
+import { ChevronUp } from "lucide-react";
+import Image from "next/image";
 import card2 from "@/assets/images/how-it-works/card2.png";
 import card3 from "@/assets/images/how-it-works/card3.png";
 import card4 from "@/assets/images/how-it-works/card4.png";
-import Image from "next/image";
-import { ChevronUp } from "lucide-react";
+import card1 from "@/assets/images/how-it-works/Map.png";
+import Eyebrow from "@/components/shared/Eyebrow";
+import SectionTitle from "@/components/shared/SectionTitle";
 
 const steps = [
   {
@@ -41,7 +41,11 @@ export default function HowItWorks() {
       className="mx-auto  flex w-full max-w-7xl flex-col items-center justify-center px-4"
     >
       <Eyebrow label="How it works" />
-      <SectionTitle title="Get roadside help in" highlight="simple 4 steps" description="Get roadside assistance in just a few simple steps. Choose the service you need, share your location, and get connected with a nearby mechanic. Track your request as help arrives, get your vehicle back on the road, and pay after the service is completed." />
+      <SectionTitle
+        title="Get roadside help in"
+        highlight="simple 4 steps"
+        description="Get roadside assistance in just a few simple steps. Choose the service you need, share your location, and get connected with a nearby mechanic. Track your request as help arrives, get your vehicle back on the road, and pay after the service is completed."
+      />
 
       <div className="relative grid w-full grid-cols-1 gap-6 py-6 sm:grid-cols-2 lg:grid-cols-4">
         {steps.map((item) => (
@@ -81,8 +85,10 @@ export default function HowItWorks() {
                  rounded-b-full border-x-2 border-b-4 border-dashed 
                  border-primary/40 lg:block"
               >
-                <ChevronUp className="absolute -top-1 right-0 h-6 w-6 
-                translate-x-1/2 text-primary" />
+                <ChevronUp
+                  className="absolute -top-1 right-0 h-6 w-6 
+                translate-x-1/2 text-primary"
+                />
               </div>
             )}
           </article>

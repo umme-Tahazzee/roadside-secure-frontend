@@ -33,7 +33,8 @@ Open http://localhost:3000.
 
 | Variable | Purpose |
 |---|---|
-| `NEXT_PUBLIC_API_BASE_URL` | Backend API URL, e.g. `http://localhost:5000/api/v1` |
+| `NEXT_PUBLIC_API_BASE_URL` | `/api/v1` (same-origin, proxied to the backend) or a full URL such as `http://localhost:5000/api/v1` in dev |
+| `BACKEND_ORIGIN` | Backend address for the server-side rewrite and `proxy.ts`, e.g. `http://localhost:5000` |
 | `NEXT_PUBLIC_GOOGLE_CLIENT_ID` | Google OAuth client ID |
 | `NEXT_PUBLIC_SITE_URL` | Public site URL used for SEO metadata (optional) |
 
@@ -109,13 +110,43 @@ Rules of thumb:
 - Use the `@/` import alias (it points to the project root), for example `import Logo from "@/components/shared/logo"`.
 - Every folder with several exports has an `index.ts` so you can import from `@/hooks`, `@/api`, `@/types`.
 
+## Dashboards
+
+| Route | Role | What it does |
+|---|---|---|
+| `/customer` | Customer | Request help (pick a spot on the map) and follow the mechanic live |
+| `/customer/find` | Customer | Find online mechanics near a spot, sorted by distance, with rating and ETA |
+| `/customer/history` | Customer | Past requests, bKash payment, refund request, star review |
+| `/mechanic` | Mechanic | Stats, online/offline switch, jobs in progress |
+| `/mechanic/requests` | Mechanic | Nearby pending requests on a map, nearest first |
+| `/mechanic/jobs`, `/earnings`, `/profile` | Mechanic | Accept, start and complete jobs, collect payment, view earnings |
+| `/admin/*` | Admin | Users, mechanic approval, requests, payments and refunds, activity log |
+
+Maps use Leaflet with OpenStreetMap tiles (no API key). `components/shared/map/` holds the shared map: `LiveMap` (browser-only wrapper), `MapCanvas` (markers, dashed distance line) and distance/ETA helpers.
+
 ## Auth Flow
 
 1. Register: the user submits the form and the backend emails an OTP.
 2. Verify: the user enters the OTP on `/register/verify-account`.
-3. Login: email/password or Google. The backend sets httpOnly cookies, so the frontend never stores tokens.
-4. Mechanics fill in the application form at `/apply`.
+3. Login: email/password or Google. The backend sets httpOnly cookies, so the frontend never stores tokens. The user lands on their own dashboard.
+4. Mechanics fill in the application form at `/apply`. They get the dashboard once an admin approves them.
+
+### proxy.ts
+
+`proxy.ts` (the Next.js 16 name for middleware) runs on the server before a page loads:
+
+- Guards `/admin`, `/mechanic` and `/customer`. No session goes to `/login?next=...`; the wrong role goes to its own dashboard.
+- Keeps signed-in users away from `/login` and `/register`.
+- Refreshes the session silently: the access token lasts 15 minutes. If only the refresh cookie is left, the proxy calls `/auth/refresh-token` and forwards the new cookies.
+
+It only decodes the JWT to read the role. The backend still verifies every API call, so the proxy is for navigation, not security.
+
+In the browser, `lib/apiClient.ts` does the same refresh once on a `401` and repeats the call.
+
+### Same-origin API (rewrites)
+
+`next.config.ts` rewrites `/api/v1/*` to `BACKEND_ORIGIN`. With `NEXT_PUBLIC_API_BASE_URL=/api/v1`, auth cookies belong to the frontend domain. This is what lets `proxy.ts` see them in production, where the API is on a different domain and browsers block third-party cookies.
 
 ## Deployment
 
-`next.config.ts` uses `output: "export"`, so `npm run build` creates a static site in `out/` that any static host can serve. Set the `NEXT_PUBLIC_*` variables in your host before building.
+The app needs a Node server (`npm run build && npm start`, Vercel, or Docker). `output: "export"` was removed because `proxy.ts` and the rewrites cannot run on a static host. Set `NEXT_PUBLIC_API_BASE_URL`, `BACKEND_ORIGIN` and `NEXT_PUBLIC_GOOGLE_CLIENT_ID` in the host, and set the backend `FRONTEND_URL` to the deployed site.

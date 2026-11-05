@@ -1,5 +1,5 @@
-import Link from "next/link";
 import { ArrowRight, LogIn, LogOut } from "lucide-react";
+import Link from "next/link";
 
 import { Button, buttonVariants } from "@/components/ui/button";
 import { cn } from "@/lib/utils";
@@ -32,7 +32,7 @@ export function DesktopHeader({ isLoggedIn, isLoggingOut, onLogout }: Props) {
         {isLoggedIn ? (
           <Button
             variant="outline"
-            size='lg'
+            size="lg"
             disabled={isLoggingOut}
             onClick={onLogout}
             className="gap-2 rounded-full"
@@ -44,11 +44,10 @@ export function DesktopHeader({ isLoggedIn, isLoggingOut, onLogout }: Props) {
           <>
             <Link
               href="/login"
-              
-               className={cn(
-                buttonVariants({ variant: "outline", size:"xl" }),
-              
-                "gap-2 rounded-full"
+              className={cn(
+                buttonVariants({ variant: "outline", size: "xl" }),
+
+                "gap-2 rounded-full",
               )}
             >
               <LogIn className="size-4" />
@@ -57,7 +56,10 @@ export function DesktopHeader({ isLoggedIn, isLoggingOut, onLogout }: Props) {
 
             <Link
               href="/register"
-              className={cn(buttonVariants({size:"xl"}), "gap-2 rounded-full")}
+              className={cn(
+                buttonVariants({ size: "xl" }),
+                "gap-2 rounded-full",
+              )}
             >
               Get started
               <ArrowRight className="size-4" />
@@ -65,8 +67,6 @@ export function DesktopHeader({ isLoggedIn, isLoggingOut, onLogout }: Props) {
           </>
         )}
       </div>
-
-      
     </div>
   );
 }
