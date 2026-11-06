@@ -38,6 +38,8 @@ export function LoginForm({
 }: React.ComponentProps<"div">) {
   const [showPassword, setShowPassword] = useState(false);
   const { mutate: login, isPending: loginPending } = useLogin();
+   
+   
   const router = useRouter();
   const queryClient = useQueryClient();
   const nextPath = safeNextPath(useSearchParams().get("next"));
@@ -57,6 +59,8 @@ export function LoginForm({
       };
       login(loginData, {
         onSuccess: async () => {
+          console.log("OK");
+          
           toast.add({
             title: "Login Successfully",
             description: "Welcome back",
@@ -80,6 +84,8 @@ export function LoginForm({
           );
         },
         onError: (err) => {
+          console.log(err);
+          
           toast.add({
             title: "Authorization failed",
             description: getErrorMessage(err),

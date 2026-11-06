@@ -10,7 +10,7 @@ const notoSans = Noto_Sans({ subsets: ["latin"], variable: "--font-sans" });
 const geistSans = Geist({ variable: "--font-geist-sans", subsets: ["latin"] });
 const geistMono = Geist_Mono({ variable: "--font-geist-mono", subsets: ["latin"] });
 
-const siteUrl = process.env.NEXT_PUBLIC_SITE_URL ?? "https://your-domain.com";
+const siteUrl = process.env.NEXT_PUBLIC_SITE_URL ?? "https://roadside-secure-frontend.vercel.app";
 
 export const metadata: Metadata = {
   metadataBase: new URL(siteUrl),

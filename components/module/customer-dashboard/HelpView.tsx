@@ -10,7 +10,7 @@ import { NewRequestForm } from "./NewRequestForm";
 import { PayAndReview } from "./PayAndReview";
 import { TrackingPanel } from "./TrackingPanel";
 
-export function HelpView() {
+export function   HelpView() {
   const active = useActiveRequest();
   const history = useMyRequests("COMPLETED");
 

@@ -1,6 +1,4 @@
 import { LoginForm } from "@/components/module/form/LoginForm"
-import { GalleryVerticalEnd } from "lucide-react"
-import Link from "next/link"
 import { Suspense } from "react"
 import img from '@/assets/images/auth/login.png'
 import Image from "next/image"
