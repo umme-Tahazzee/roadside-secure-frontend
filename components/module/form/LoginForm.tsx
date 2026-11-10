@@ -27,7 +27,7 @@ import { Eye, EyeOff } from "lucide-react";
 import { useRouter, useSearchParams } from "next/navigation";
 import { useQueryClient } from "@tanstack/react-query";
 import { getErrorMessage } from "@/lib/error";
-import { safeNextPath } from "@/lib/redirect";
+import { dashboardForRole, safeNextPath } from "@/lib/redirect";
 import { toast } from "@/components/ui/toast";
 import { Spinner } from "@/components/ui/spinner";
 import GoogleLoginComponent from "./GoogleLoginComponent";
@@ -66,22 +66,16 @@ export function LoginForm({
             description: "Welcome back",
             type: "success",
           });
-          // refresh the current user, so admins can be sent to their panel
-          const me = await queryClient.fetchQuery({
-            queryKey: ["user"],
-            queryFn: userProfile,
-            staleTime: 0,
-          });
-          const role = me.data.role;
-          router.push(
-            nextPath !== "/"
-              ? nextPath
-              : role === "ADMIN"
-                ? "/admin"
-                : role === "MECHANIC"
-                  ? "/mechanic"
-                  : "/customer",
-          );
+          let target = "/customer";
+          try {
+            const me = await queryClient.fetchQuery({
+              queryKey: ["user"],
+              queryFn: userProfile,
+              staleTime: 0,
+            });
+            target = dashboardForRole(me.data.role);
+          } catch {}
+          router.push(nextPath !== "/" ? nextPath : target);
         },
         onError: (err) => {
           console.log(err);
